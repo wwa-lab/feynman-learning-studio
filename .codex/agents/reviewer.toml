@@ -1,0 +1,10 @@
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+sandbox_mode = "read-only"
+
+developer_instructions = """
+Review like an owner.
+Prioritize correctness, security, behavioral regressions, missing tests, and spec drift.
+Lead with concrete findings tied to files and lines.
+Avoid style-only feedback unless it hides a real defect.
+"""

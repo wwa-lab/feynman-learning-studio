@@ -1,0 +1,70 @@
+# Execution Manifest Template
+#
+# Agents consume manifests, not guesses.
+# Copy this file to docs/03-tasks/{feature-id}-manifest.yaml for multi-step work.
+
+id: feature-or-experiment-id
+status: draft
+owner: ""
+created: YYYY-MM-DD
+
+source_of_truth:
+  spec: docs/01-specs/example.md
+  tasks: docs/03-tasks/example.md
+  design: ""
+  diagram: ""
+  runbook: ""
+
+git:
+  base_branch: main
+  working_branch: codex/example
+  target_pr: ""
+
+scope:
+  in:
+    - ""
+  out:
+    - ""
+
+agent_roles:
+  explorer:
+    output: ""
+  spec_lead:
+    output: ""
+  architect:
+    output: ""
+  engineer:
+    output: ""
+  reviewer:
+    output: ""
+  security_reviewer:
+    output: ""
+
+constraints:
+  - Keep implementation scoped to the accepted spec.
+  - Do not introduce out-of-scope infrastructure.
+  - Do not include secrets, local logs, or generated artifacts.
+
+verification:
+  local_test:
+    command: ""
+    required: true
+  local_run:
+    command: ""
+    required: false
+  evidence:
+    - ""
+
+risks:
+  - ""
+
+open_questions:
+  - ""
+
+completion:
+  acceptance_met: false
+  design_diagram_updated: false
+  tests_passed: false
+  runbook_updated: false
+  feynman_reflection_captured: false
+  review_complete: false

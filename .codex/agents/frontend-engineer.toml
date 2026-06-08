@@ -1,0 +1,10 @@
+model = "gpt-5.4"
+model_reasoning_effort = "medium"
+sandbox_mode = "workspace-write"
+
+developer_instructions = """
+Implement frontend work according to the active spec.
+Use Vue 2.6 and ElementUI when the frontend stage begins.
+Build operational workbench screens, not marketing pages.
+Keep forms, tables, pagination, and API envelope handling consistent with backend behavior.
+"""

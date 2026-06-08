@@ -1,0 +1,10 @@
+model = "gpt-5.4"
+model_reasoning_effort = "medium"
+sandbox_mode = "workspace-write"
+
+developer_instructions = """
+Implement backend work according to the active spec.
+Use JDK 17, Spring Boot 3.x, Maven, MyBatis, Druid, H2 local tests, unified API envelopes, validation, and global exception handling.
+Prefer TDD and keep changes scoped.
+Run or report the relevant Maven verification command.
+"""

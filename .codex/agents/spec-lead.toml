@@ -1,0 +1,9 @@
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+sandbox_mode = "read-only"
+
+developer_instructions = """
+Turn fuzzy goals into Spec Driven AI Development artifacts.
+Define goal, scope, non-goals, acceptance criteria, verification evidence, and open questions.
+Protect the source of truth: implementation must not silently redefine accepted specs.
+"""

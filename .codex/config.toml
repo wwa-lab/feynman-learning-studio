@@ -1,0 +1,26 @@
+[features]
+multi_agent = true
+
+[agents.explorer]
+config = ".codex/agents/explorer.toml"
+
+[agents.spec-lead]
+config = ".codex/agents/spec-lead.toml"
+
+[agents.architect]
+config = ".codex/agents/architect.toml"
+
+[agents.backend-engineer]
+config = ".codex/agents/backend-engineer.toml"
+
+[agents.frontend-engineer]
+config = ".codex/agents/frontend-engineer.toml"
+
+[agents.reviewer]
+config = ".codex/agents/reviewer.toml"
+
+[agents.security-reviewer]
+config = ".codex/agents/security-reviewer.toml"
+
+[agents.docs-researcher]
+config = ".codex/agents/docs-researcher.toml"

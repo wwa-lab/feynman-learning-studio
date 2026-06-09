@@ -1,15 +1,15 @@
 # Design
 
-Use this directory for architecture notes, module boundaries, data model decisions, and technical designs derived from accepted specs.
+这个目录保存从已接受 spec 推导出来的 architecture notes、module boundaries、data model decisions 和 technical designs。
 
-Start design with a visual model when the work has 3+ components, state transitions, data relationships, or agent handoffs.
+当一个 slice 有 3 个以上组件、状态流转、数据关系或 handoff 时，先画 visual model。
 
-Preferred diagram format:
+默认 diagram 格式：
 
-- editable source: `{feature-id}.drawio`
-- exported preview when available: `{feature-id}.drawio.png` or `{feature-id}.drawio.svg`
+- 可编辑源文件：`{feature-id}.drawio`
+- 有条件时导出预览：`{feature-id}.drawio.png` 或 `{feature-id}.drawio.svg`
 
-Recommended diagram types:
+推荐 diagram 类型：
 
 - architecture diagram
 - sequence diagram
@@ -17,4 +17,10 @@ Recommended diagram types:
 - state transition diagram
 - learning-loop diagram
 
-Draw.io source files are part of the design, not throwaway artifacts.
+Draw.io source files 是设计本身的一部分，不是一次性草稿。
+
+v0.1 中文阅读导览：
+
+```text
+docs/02-design/v0.1-backend-learning-core-reading-guide.md
+```

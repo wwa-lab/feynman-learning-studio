@@ -48,3 +48,4 @@ node_modules/
 logs/
 *.log.*
 local-run-evidence/
+.understand-anything/

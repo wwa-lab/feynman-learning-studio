@@ -1,14 +1,14 @@
 # Workflow
 
-## Modes
+## 工作模式
 
-Use the smallest workflow that protects the work.
+使用能保护当前工作的最轻流程。不要为了流程而流程。
 
 ### Light Mode
 
-Use for wording changes, small docs edits, config cleanup, and narrow bug fixes.
+适用于 wording changes、小文档修改、config cleanup、窄范围 bug fix。
 
-Flow:
+流程：
 
 ```text
 inspect -> edit -> verify -> summarize
@@ -16,21 +16,25 @@ inspect -> edit -> verify -> summarize
 
 ### Standard SDD Mode
 
-Use for normal feature work.
+适用于普通 feature work。
 
-Flow:
+流程：
 
 ```text
 spec -> task list -> tests -> implementation -> local test -> local run -> review -> docs
 ```
 
-For multi-step work, add an execution manifest from `docs/03-tasks/execution-manifest-template.yaml`.
+多步骤工作需要 execution manifest：
+
+```text
+docs/03-tasks/execution-manifest-template.yaml
+```
 
 ### Heavy Mode
 
-Use for architecture, security-sensitive work, cross-layer features, or data model changes.
+适用于 architecture、security-sensitive work、cross-layer feature、data model change。
 
-Flow:
+流程：
 
 ```text
 proposal -> design -> tasks -> TDD -> implementation -> review -> verification -> archive
@@ -38,9 +42,9 @@ proposal -> design -> tasks -> TDD -> implementation -> review -> verification -
 
 ## Harness / Loop / Skill Rhythm
 
-This project uses Harness + loop + skill as the default working model. Multi-agent execution is not the default.
+本项目默认使用 Harness + loop + skill，不默认使用 multi-agent execution。
 
-Flow:
+默认流程：
 
 ```text
 choose skill
@@ -51,7 +55,7 @@ choose skill
   -> record evidence, issues, fixes, and learning notes
 ```
 
-Loop:
+Step loop：
 
 ```text
 plan one small step
@@ -62,45 +66,51 @@ plan one small step
   -> continue, adjust, or stop
 ```
 
-Harness gates:
+Harness gates：
 
-- Spec gate: the change matches accepted scope and non-goals.
-- Design gate: architecture, data model, API, and package boundaries stay aligned.
-- Test gate: automated verification passes.
-- Run gate: local manual smoke is reproducible.
-- Style gate: code/docs match this repository's learning style.
-- Learning gate: runbook captures setup, verification,踩坑, fixes, and Feynman reflection prompts.
+- Spec gate：变更必须符合已接受 scope 和 non-goals。
+- Design gate：architecture、data model、API、package boundary 必须对齐。
+- Test gate：自动化验证通过。
+- Run gate：local manual smoke 可复现。
+- Style gate：code/docs 符合本 repo 的 learning style。
+- Learning gate：runbook 记录 setup、verification、踩坑、fixes、Feynman reflection prompts。
 
-Use `docs/00-project-rules/agent-skill-routing.md` to map SDD stages to skills, harness gates, and expected artifacts.
+阶段、skill、gate 和 artifact 的映射见：
 
-Detailed rules:
+```text
+docs/00-project-rules/agent-skill-routing.md
+```
 
-- Harness loop: `docs/00-project-rules/harness-loop.md`
-- Harness gates: `docs/00-project-rules/harness-gates.md`
+详细规则：
+
+- Harness loop：`docs/00-project-rules/harness-loop.md`
+- Harness gates：`docs/00-project-rules/harness-gates.md`
 
 ## Codex Producer / Claude Reviewer Flow
 
-Default tool split:
+默认情况下，Codex 是 producer：
 
 ```text
 Codex writes docs/code/tests/runbooks
   -> Codex records local verification evidence
-  -> Claude Code performs independent review
+  -> optional Claude Code review when requested or risky
   -> Codex applies accepted fixes
   -> final verification is recorded before PR/merge
 ```
 
-Use this split only when the user asks for independent review or when a change is risky enough to justify it:
+只有在用户要求 independent review，或变更风险足够高时，才把 Claude Code review 放进默认流程。
 
-- non-trivial backend or frontend code
-- changes to API contracts or persistence
-- SDD docs that become implementation input
-- security-sensitive changes
-- PRs intended for merge
+适合 external review 的情况：
 
-For tiny docs edits, typo fixes, local cleanup, and normal learning-loop work, Claude Code review is optional and not part of the default loop.
+- non-trivial backend 或 frontend code。
+- API contracts 或 persistence 变更。
+- 会成为 implementation input 的 SDD docs。
+- security-sensitive changes。
+- 准备 merge 的 PR。
 
-Claude Code review should focus on:
+小文档修改、typo、local cleanup、普通 learning-loop work 不需要默认 Claude Code review。
+
+Review 重点：
 
 - spec alignment
 - missing requirements
@@ -112,57 +122,119 @@ Claude Code review should focus on:
 
 ## Definition Of Ready
 
-Before implementation starts, the task should have:
+开始非平凡 implementation 前，当前 task 应该具备：
 
-- Goal.
-- Scope.
-- Non-goals.
-- Acceptance criteria.
-- Verification command.
-- Open questions, or a clear decision that no clarification is needed.
-- Execution manifest for multi-step implementation loop.
+- Goal。
+- Scope。
+- Non-goals。
+- Acceptance criteria。
+- Verification command。
+- Open questions，或明确说明无需进一步澄清。
+- Multi-step implementation loop 的 execution manifest。
 
-Small tasks can satisfy this implicitly.
+小任务可以隐式满足这些条件。
 
 ## TDD Path
 
-For new behavior:
+新增行为默认走 TDD：
 
-1. Write or update tests first.
-2. Run tests and confirm the relevant test fails for the expected reason.
-3. Implement the smallest change to pass.
-4. Refactor while tests stay green.
-5. Run the full relevant verification command.
+1. 先写或更新测试。
+2. 运行测试，确认相关测试因预期原因失败。
+3. 用最小实现让测试通过。
+4. 在测试保持绿色的情况下 refactor。
+5. 运行完整相关 verification command。
 
-For documentation-only changes, proofread and run link/path checks when practical.
+文档-only changes 应至少 proofread，并在可行时检查路径和链接。
 
 ## Verification Gates
 
-At minimum:
+最低验证要求：
 
-- Docs/config changes: review diff and check referenced paths exist.
-- Backend changes: run `mvn test -Dspring.profiles.active=test` from `backend`.
-- Frontend changes: run lint/test/build commands once available.
-- Full-stack changes: run backend tests, frontend checks, and a local smoke test.
+- Docs/config changes：review diff，并检查引用路径存在。
+- Backend changes：在 `backend` 下运行 `mvn test -Dspring.profiles.active=test`。
+- Frontend changes：frontend 可用后运行 lint/test/build。
+- Full-stack changes：backend tests、frontend checks、local smoke test。
 
-Before PR:
+PR 前：
 
-- Review `git diff`.
-- Confirm no secrets or generated artifacts are included.
-- Update runbook/spec/docs.
-- State skipped checks and why.
+- Review `git diff`。
+- 确认没有 secrets 或 generated artifacts。
+- 更新 runbook/spec/docs。
+- 明确说明 skipped checks 和原因。
 
 ## Git Flow
 
-Recommended branch pattern:
+本项目使用简单的 learning-slice branch strategy，不使用传统 Git Flow。
+
+长期分支：
+
+- `main`：唯一稳定 source of truth，只放完成的 learning slices。
+
+短生命周期分支：
+
+- `codex/<slice-id>`：Codex 创建的 feature 或 learning slice。
+- `codex/docs-<topic>`：docs-only changes。
+- `codex/fix-<topic>`：聚焦修复。
+- `codex/chore-<topic>`：repo cleanup。
+
+默认 branch pattern：
 
 ```text
 main
-  <- codex/<short-change-name>
-  <- develop-leo for local exploration when explicitly desired
+  <- codex/<slice-id>
 ```
 
-Commit messages:
+例子：
+
+```text
+codex/v0.2-run-evidence
+codex/v0.3-reflection-core
+codex/docs-harness-loop
+codex/fix-flyway-migration
+```
+
+不默认使用长期 `develop` 分支。
+如果 `develop-leo` 存在，把它当作历史或本地探索分支，除非用户明确决定恢复它。
+
+Branch lifecycle：
+
+```text
+start from main
+  -> create codex/<slice-id>
+  -> complete harness loop
+  -> push branch
+  -> open PR
+  -> merge into main
+  -> confirm commits are in main
+  -> delete local and remote slice branch
+```
+
+开始新 slice：
+
+```bash
+git switch main
+git pull
+git switch -c codex/<slice-id>
+```
+
+Merge 后清理：
+
+```bash
+git switch main
+git pull
+git branch -d codex/<slice-id>
+git push origin --delete codex/<slice-id>
+```
+
+删除 branch 前必须确认：
+
+- PR 已 merge，或用户确认不再需要。
+- `main` 包含目标 commits。
+- branch 上没有未合并的 local-only commit。
+
+## Commit Messages
+
+使用 conventional commits：
 
 ```text
 feat: add learning topic API
@@ -172,23 +244,24 @@ test: cover experiment status update
 chore: configure codex agents
 ```
 
-Do not push, create PRs, or change repository settings without explicit user approval.
+没有用户明确批准，不要 push、create PR、merge、publish 或修改 repository settings。
 
 ## GitHub Flow
 
-Use issues for user-visible work and design questions. Use PRs for reviewable changes.
+Issues 用于 user-visible work 和 design questions。
+PRs 用于 reviewable changes。
 
-PRs should include:
+PR 应包含：
 
-- Purpose.
-- Scope.
-- Verification.
-- Screenshots or API examples when relevant.
-- Risks and follow-ups.
+- Purpose。
+- Scope。
+- Verification。
+- Screenshots 或 API examples。
+- Risks and follow-ups。
 
-Recommended repository settings to consider later:
+后续可以考虑的 repository settings：
 
-- Enable delete branch on merge.
-- Prefer squash merge for small feature PRs.
-- Add branch protection for `main` after CI exists.
-- Require PR review and status checks once tests are automated.
+- merge 后自动 delete branch。
+- 小 feature PR 使用 squash merge。
+- CI 稳定后给 `main` 加 branch protection。
+- 自动化测试可用后要求 PR review 和 status checks。

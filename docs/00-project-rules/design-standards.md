@@ -2,53 +2,55 @@
 
 ## Product Feel
 
-Feynman Learning Studio is an engineer workbench, not a marketing site and not a generic admin demo.
+Feynman Learning Studio 是 engineer workbench，不是 marketing site，也不是 generic admin demo。
 
-The interface should feel:
+界面应该让人感觉：
 
 - calm
 - structured
 - evidence-oriented
-- readable for long work sessions
-- serious enough for enterprise engineering
-- approachable enough for learning and reflection
+- 适合长时间阅读和操作
+- 对 enterprise engineering 足够严肃
+- 对学习和 reflection 足够友好
 
-Avoid high-pressure command-center styling unless a future feature explicitly needs operational monitoring.
+不要做高压 command-center 风格，除非未来 feature 明确需要 operational monitoring。
 
 ## Primary User Jobs
 
-Design every screen around these jobs:
+每个 screen 都要围绕这些任务设计：
 
-- understand what learning experiment is active
-- see the spec, status, commands, and evidence
-- run or reproduce the experiment
-- inspect errors and fixes
-- read AI explanations
-- write Feynman reflection
-- turn the result into reusable knowledge or article material
+- 理解当前 active learning experiment。
+- 看到 spec、status、commands 和 evidence。
+- 运行或复现实验。
+- 检查 errors 和 fixes。
+- 阅读 AI explanations。
+- 写 Feynman reflection。
+- 把结果整理成 reusable knowledge 或 article material。
 
 ## Layout Principles
 
-- Prefer workbench layouts over landing pages.
-- Prefer tables, forms, detail panels, timelines, status strips, and evidence panels.
-- Keep navigation predictable and stable.
-- Put the core object, `LearningExperiment`, near the center of the experience.
-- Make status and verification evidence visible without hunting.
-- Avoid nested cards and decorative section cards.
-- Keep visual hierarchy compact; do not use hero-scale typography inside tool surfaces.
+- 优先使用 workbench layout，不做 landing page。
+- 优先使用 tables、forms、detail panels、timelines、status strips、evidence panels。
+- Navigation 要 predictable and stable。
+- 核心对象 `LearningExperiment` 要靠近体验中心。
+- Status 和 verification evidence 要一眼能看到。
+- 避免 nested cards 和 decorative section cards。
+- 保持 visual hierarchy 紧凑；不要在 tool surface 里使用 hero-scale typography。
 
 ## Visual Style
 
-- Use a restrained professional palette with clear status colors.
-- Do not let the UI become dominated by a single hue family.
-- Avoid oversized gradients, decorative blobs, bokeh, and ornamental illustrations.
-- Keep radii small: 4-8px unless a component library requires otherwise.
-- Use spacing and light separators for grouping; avoid heavy borders everywhere.
-- Use icons for obvious actions when available.
+- 使用 restrained professional palette，并保留清晰 status colors。
+- 不要让 UI 被单一 hue family 统治。
+- 避免 oversized gradients、decorative blobs、bokeh、ornamental illustrations。
+- Radius 保持小：4-8px，除非组件库要求不同。
+- 用 spacing 和 light separators 分组，避免到处 heavy borders。
+- 常见 action 优先使用 icons。
 
 ## Status Language
 
-Status should be consistent across docs, backend, and frontend:
+Status 在 docs、backend、frontend 中要保持一致。
+
+候选 status：
 
 - `PLANNED`
 - `RUNNING`
@@ -59,40 +61,40 @@ Status should be consistent across docs, backend, and frontend:
 - `DONE`
 - `ARCHIVED`
 
-Status UI should make progression obvious.
+Status UI 应该让 progression 明显可见。
 
 ## Draw.io Design Rule
 
-At the beginning of design, create or update a draw.io diagram when the work has 3+ moving parts.
+当设计有 3 个以上 moving parts 时，先创建或更新 draw.io diagram。
 
-Use:
+使用：
 
-- architecture diagrams for components and layers
-- sequence diagrams for request or agent handoff flow
-- ER diagrams for persistence relationships
-- state diagrams for lifecycle/status transitions
-- learning-loop diagrams for spec -> AI -> test -> run -> reflection
+- architecture diagram：components、layers、dependencies。
+- sequence diagram：request flow 或 handoff flow。
+- ER diagram：persistence relationships。
+- state diagram：lifecycle/status transitions。
+- learning-loop diagram：spec -> AI -> test -> run -> reflection。
 
-Preferred files:
+推荐文件：
 
 ```text
 docs/02-design/{feature-id}.drawio
 docs/02-design/{feature-id}.drawio.png
 ```
 
-If export is not available, the `.drawio` source is still required.
+如果暂时无法导出 preview，`.drawio` source 仍然必须存在。
 
 ## Accessibility And Usability
 
-- Text must not overflow controls or panels.
-- Forms need clear validation states.
-- Buttons should use clear labels or familiar icons.
-- Tables need empty, loading, and error states.
-- Keyboard and screen-reader basics should be considered once UI work begins.
+- Text 不应溢出 controls 或 panels。
+- Forms 需要清楚 validation states。
+- Buttons 使用清楚 labels 或 familiar icons。
+- Tables 需要 empty、loading、error states。
+- UI 开始后要考虑基本 keyboard 和 screen-reader support。
 
 ## v0.2 Frontend Direction
 
-The first frontend should be a workbench:
+第一个 frontend 应该是 workbench：
 
 ```text
 left: learning topics
@@ -100,4 +102,4 @@ center: learning experiments list and status
 right: experiment detail, spec, commands, evidence, AI summary, reflection
 ```
 
-Do not build a landing page as the first usable experience.
+不要把 landing page 当作第一个 usable experience。

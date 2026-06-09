@@ -2,16 +2,17 @@
 
 ## Coding Baseline
 
-Use a project-tailored baseline:
+Backend 使用项目定制基线：
 
 ```text
 Alibaba Java Coding Guidelines
   + Spring Boot 3 engineering practice
   + MyBatis / SQL safety rules
+  + Flyway migration discipline
   + automated formatting and static checks over time
 ```
 
-Alibaba Java Coding Guidelines are the primary human-readable baseline for:
+Alibaba Java Coding Guidelines 是主要的人类可读基线，覆盖：
 
 - naming
 - constants
@@ -20,40 +21,40 @@ Alibaba Java Coding Guidelines are the primary human-readable baseline for:
 - logging
 - unit testing discipline
 - security awareness
-- MySQL / SQL conventions
+- SQL conventions
 - project structure judgment
 
-Spring Boot project practice is the baseline for:
+Spring Boot practice 覆盖：
 
-- controller/service/mapper responsibilities
+- controller / service / mapper responsibilities
 - dependency injection
 - configuration profiles
 - validation and global exception handling
 - actuator and OpenAPI integration
 - test slices and integration tests
 
-MyBatis-specific rules are mandatory for persistence:
+MyBatis persistence 必须遵守：
 
-- parameterized SQL only
-- no user-input string concatenation
-- mapper methods must match XML statements
-- SQL differences between H2 and integration databases must be documented
+- 只使用 parameterized SQL。
+- 不拼接 user input。
+- mapper methods 必须和 XML statements 对齐。
+- H2 和 PostgreSQL 的 SQL 差异必须记录。
 
-For v0.1, these rules are enforced by review and tests first. Static-analysis tooling can be added after the backend skeleton exists.
+v0.1 先通过 review 和 tests 执行这些规则。Static-analysis tooling 可以在 backend skeleton 稳定后再加入。
 
-Planned automation sequence:
+计划中的自动化顺序：
 
-1. Maven test with H2 profile.
-2. Formatter, such as Spotless or Spring Java Format.
-3. Checkstyle for basic formatting/style consistency.
-4. SpotBugs for bug patterns.
-5. PMD / P3C rules for Alibaba guideline coverage where practical.
+1. Maven test with H2 profile。
+2. Formatter，例如 Spotless 或 Spring Java Format。
+3. Checkstyle。
+4. SpotBugs。
+5. PMD / P3C rules。
 
-Do not block v0.1 scaffolding on full static-analysis setup.
+不要为了完整 static-analysis setup 阻塞 v0.1 scaffolding。
 
 ## Stack
 
-v0.1 backend target:
+v0.1 backend target：
 
 - JDK 17
 - Spring Boot 3.x
@@ -62,13 +63,13 @@ v0.1 backend target:
 - Druid
 - Flyway
 - H2 for local test
-- MySQL or PostgreSQL for local integration
+- PostgreSQL for later integration
 - JUnit 5
 - OpenAPI / Swagger
 
 ## Module Structure
 
-Use package-by-feature:
+使用 package-by-feature：
 
 ```text
 backend/src/main/java/com/feynman/learningstudio/
@@ -90,20 +91,20 @@ backend/src/main/java/com/feynman/learningstudio/
     dto/
 ```
 
-Do not use a flat `controller/`, `service/`, `mapper/` package for all domains.
+不要使用所有 domain 共用的 flat `controller/`、`service/`、`mapper/` package。
 
 ## Naming Rules
 
-- Class names use `UpperCamelCase`.
-- Method and field names use `lowerCamelCase`.
-- Constants use `UPPER_SNAKE_CASE`.
-- DTOs should make request/response direction clear, for example `CreateTopicRequest`, `TopicResponse`, `TopicQuery`.
-- Business exceptions should be named after the failure concept, for example `TopicNotFoundException`.
-- Mapper XML namespace must match the mapper interface fully qualified name.
+- Class names 使用 `UpperCamelCase`。
+- Method 和 field names 使用 `lowerCamelCase`。
+- Constants 使用 `UPPER_SNAKE_CASE`。
+- DTO 名称要体现方向，例如 `CreateTopicRequest`、`TopicResponse`、`TopicQuery`。
+- Business exception 应按失败概念命名，例如 `TopicNotFoundException`。
+- Mapper XML namespace 必须匹配 mapper interface 的 fully qualified name。
 
 ## API Contract
 
-Use resource-oriented endpoints:
+使用 resource-oriented endpoints：
 
 ```text
 POST   /api/topics
@@ -120,7 +121,7 @@ PATCH  /api/experiments/{id}/status
 DELETE /api/experiments/{id}
 ```
 
-All endpoints return the same envelope:
+所有 endpoint 返回统一 envelope：
 
 ```json
 {
@@ -131,7 +132,7 @@ All endpoints return the same envelope:
 }
 ```
 
-Pagination data:
+Pagination data：
 
 ```json
 {
@@ -144,17 +145,17 @@ Pagination data:
 
 ## Validation
 
-- Validate request bodies with Jakarta Bean Validation.
-- Validate path variables and query parameters.
-- Validate status values and status transitions in the service layer.
-- Validate topic slug format: lowercase letters, numbers, and hyphens.
-- Validate experiment references to existing topics.
+- 使用 Jakarta Bean Validation 校验 request bodies。
+- 校验 path variables 和 query parameters。
+- 在 service layer 校验 status values 和 status transitions。
+- Topic slug format：lowercase letters、numbers、hyphens。
+- Experiment 必须引用已存在 topic。
 
 ## Error Handling
 
-Use a global exception handler.
+使用 global exception handler。
 
-Required error categories:
+必须支持的 error categories：
 
 - validation failure
 - topic not found
@@ -164,55 +165,55 @@ Required error categories:
 - database access failure
 - unexpected system error
 
-API errors must be stable and user-friendly. Do not expose SQL, stack traces, class names, connection strings, or local file paths.
+API errors 必须稳定、用户友好。不要暴露 SQL、stack traces、class names、connection strings 或 local file paths。
 
-Logging and exception rules:
+Logging / exception 规则：
 
-- Do not swallow exceptions silently.
-- Do not catch broad exceptions unless converting them at a boundary.
-- Log unexpected exceptions once at the boundary with context.
-- Do not log secrets, tokens, passwords, or full database URLs.
+- 不要 silently swallow exceptions。
+- 不要随意 catch broad exceptions，除非是在边界转换异常。
+- Unexpected exceptions 只在边界记录一次，并带足够上下文。
+- 不记录 secrets、tokens、passwords 或完整 database URLs。
 
 ## Persistence
 
-- Keep SQL in MyBatis mapper XML or mapper annotations.
-- Use parameterized queries only.
-- Never concatenate user input into SQL.
-- Manage database schema with Flyway migrations under `backend/src/main/resources/db/migration/`.
-- Do not use ad hoc `schema.sql` for application schema management.
-- Keep H2 migrations close to the integration database migrations.
-- Document H2 and MySQL/PostgreSQL differences in the runbook.
-- Avoid `SELECT *`; select explicit columns.
-- Keep pagination deterministic with explicit ordering.
-- Use unique constraints for unique business keys such as topic slug.
-- Add indexes when query patterns justify them; do not add speculative indexes.
+- SQL 放在 MyBatis mapper XML 或 mapper annotations。
+- 只使用 parameterized queries。
+- 不拼接 user input 到 SQL。
+- Database schema 统一使用 Flyway migrations，目录为 `backend/src/main/resources/db/migration/`。
+- 不使用临时 `schema.sql` 管理 application schema。
+- H2 migrations 要尽量接近 PostgreSQL integration migrations。
+- H2 / PostgreSQL 差异记录到 runbook。
+- 避免 `SELECT *`，显式选择 columns。
+- Pagination 必须有 deterministic ordering。
+- 唯一业务键使用 unique constraints，例如 topic slug。
+- 只在 query pattern 证明需要时增加 indexes，不添加 speculative indexes。
 
 ## Database Migration
 
-- Use Flyway for all schema changes.
-- Name migrations with Flyway versioned migration format, for example `V1__create_learning_core_tables.sql`.
-- Keep migrations append-only after they have been shared or merged.
-- Prefer explicit table, column, constraint, and index names.
-- Do not rewrite an existing applied migration to hide a design change; add a new migration.
-- For learning slices, explain important migration decisions in the runbook.
+- 所有 schema changes 使用 Flyway。
+- Migration 命名使用 Flyway versioned migration format，例如 `V1__create_learning_core_tables.sql`。
+- Migration shared 或 merged 后保持 append-only。
+- 使用明确的 table、column、constraint、index names。
+- 不要重写已应用 migration 来隐藏设计变化；新增 migration。
+- Learning slice 中的重要 migration decision 要写进 runbook。
 
 ## Transactions
 
-- Use service-layer transaction boundaries when multiple persistence operations must succeed together.
-- Keep read-only operations simple.
-- Do not put business logic in controllers or mappers.
+- 多个 persistence operations 必须一起成功时，在 service layer 使用 transaction boundary。
+- Read-only operations 保持简单。
+- 不把 business logic 放进 controllers 或 mappers。
 
 ## Testing
 
-v0.1 minimum:
+v0.1 minimum：
 
 - service tests for validation and status behavior
 - API integration tests for Topic endpoints
 - API integration tests for Experiment endpoints
-- tests for duplicate slug, not found, invalid topic reference, validation errors
-- H2-backed tests that do not need Docker
+- tests for duplicate slug、not found、invalid topic reference、validation errors
+- H2-backed tests，不需要 Docker
 
-Preferred command:
+推荐命令：
 
 ```bash
 cd backend
@@ -221,28 +222,28 @@ mvn test -Dspring.profiles.active=test
 
 ## Logging
 
-- Log service startup.
-- Log unexpected exceptions with enough context for diagnosis.
-- Do not log secrets or full request bodies if they may contain sensitive data.
+- 记录 service startup。
+- Unexpected exceptions 记录足够诊断上下文。
+- 不记录 secrets，也不记录可能包含敏感数据的完整 request body。
 
 ## Documentation
 
-Backend changes should update:
+Backend changes 应更新：
 
-- active spec when behavior changes
-- runbook when commands/config change
-- OpenAPI docs when API changes
-- task or manifest evidence when verification completes
+- behavior 变化时更新 active spec。
+- commands/config 变化时更新 runbook。
+- API 变化时更新 OpenAPI docs。
+- verification 完成时更新 task 或 manifest evidence。
 
 ## Review Checklist
 
-Before handing backend code to Claude Code review, confirm:
+交给 Claude Code review 前，先确认：
 
-- [ ] Code follows Alibaba guideline intent for naming, exceptions, logs, collections, and SQL.
-- [ ] Spring responsibilities are separated: controller validates and delegates; service owns business rules; mapper owns persistence.
-- [ ] All external inputs are validated.
-- [ ] All SQL is parameterized.
-- [ ] Database schema changes are managed by Flyway migrations.
-- [ ] API errors use the common envelope.
-- [ ] H2 local tests pass.
-- [ ] Runbook or verification evidence is updated.
+- [ ] Code 符合 Alibaba guideline intent：naming、exceptions、logs、collections、SQL。
+- [ ] Spring responsibilities 分离：controller validates and delegates；service owns business rules；mapper owns persistence。
+- [ ] 所有 external inputs 已验证。
+- [ ] 所有 SQL 使用 parameterized queries。
+- [ ] Database schema changes 由 Flyway migrations 管理。
+- [ ] API errors 使用 common envelope。
+- [ ] H2 local tests 通过。
+- [ ] Runbook 或 verification evidence 已更新。

@@ -1,40 +1,40 @@
 # Spec: [Feature Or Learning Experiment Name]
 
-**Status**: Draft  
-**Created**: YYYY-MM-DD  
-**Owner**: [Name]  
-**Related Topic**: [Learning Topic / Transformation Topic]  
-**Target Stage**: [v0.1 / v0.2 / ...]
+**状态**: Draft
+**创建日期**: YYYY-MM-DD
+**Owner**: [Name]
+**相关主题**: [Learning Topic / Transformation Topic]
+**目标阶段**: [v0.1 / v0.2 / ...]
 
-## 1. Goal
+## 1. 目标
 
-[Describe the transformation or product goal in plain language.]
+[用普通语言说明这次 transformation 或 product goal。]
 
-## 2. Existing Engineering Experience
+## 2. 既有工程经验
 
-[What prior engineering experience should this experiment translate?]
+[这个 experiment 要把哪些已有工程经验翻译到 AI-era delivery？]
 
-Examples:
+例子：
 
-- IBM iSeries program + database file + job flow.
-- Traditional Java CRUD.
-- Testing workflow.
-- Operations or debugging workflow.
-- Business analysis or requirement writing.
+- IBM iSeries program + database file + job flow。
+- Traditional Java CRUD。
+- Testing workflow。
+- Operations 或 debugging workflow。
+- Business analysis 或 requirement writing。
 
-## 3. Problem Statement
+## 3. 问题陈述
 
-[What gap, confusion, or capability does this spec address?]
+[这个 spec 要解决什么 gap、confusion 或 capability？]
 
 ## 4. Scope
 
-In scope:
+范围内：
 
 - [Capability 1]
 - [Capability 2]
 - [Capability 3]
 
-Out of scope:
+范围外：
 
 - [Explicit non-goal 1]
 - [Explicit non-goal 2]
@@ -43,9 +43,9 @@ Out of scope:
 
 ### Story 1: [Title] (Priority: P1)
 
-As a [role], I want to [action], so that [benefit].
+作为 [role]，我希望 [action]，以便 [benefit]。
 
-**Independent Test**: [How this story can be verified by itself.]
+**Independent Test**: [这个 story 如何独立验证。]
 
 **Acceptance Scenarios**:
 
@@ -54,9 +54,9 @@ As a [role], I want to [action], so that [benefit].
 
 ### Story 2: [Title] (Priority: P2)
 
-As a [role], I want to [action], so that [benefit].
+作为 [role]，我希望 [action]，以便 [benefit]。
 
-**Independent Test**: [How this story can be verified by itself.]
+**Independent Test**: [这个 story 如何独立验证。]
 
 **Acceptance Scenarios**:
 
@@ -64,26 +64,26 @@ As a [role], I want to [action], so that [benefit].
 
 ## 6. Functional Requirements
 
-- **FR-001**: The system MUST [specific behavior].
-- **FR-002**: The system MUST [specific behavior].
-- **FR-003**: The system MUST [specific behavior].
+- **FR-001**: 系统 MUST [specific behavior]。
+- **FR-002**: 系统 MUST [specific behavior]。
+- **FR-003**: 系统 MUST [specific behavior]。
 
 ## 7. Data / Domain Model
 
-[List key entities and relationships without over-designing implementation.]
+[列出关键 entities 和 relationships，不要过度设计 implementation。]
 
-- **Entity A**: [Purpose and key fields.]
-- **Entity B**: [Purpose and key fields.]
+- **Entity A**: [用途和关键字段。]
+- **Entity B**: [用途和关键字段。]
 
 ## 8. API / Interface Contract
 
-[Describe endpoints, commands, UI actions, or workflow interfaces.]
+[描述 endpoints、commands、UI actions 或 workflow interfaces。]
 
 ```text
 METHOD /path
 ```
 
-Expected response shape:
+Expected response shape：
 
 ```json
 {
@@ -96,21 +96,21 @@ Expected response shape:
 
 ## 9. Design Diagram
 
-Required when the experiment or feature has 3+ components, state transitions, data relationships, or agent handoffs.
+当 experiment 或 feature 有 3 个以上 components、状态流转、数据关系或 handoff 时，必须有 diagram。
 
-Diagram source:
+Diagram source：
 
 ```text
 docs/02-design/[feature-id].drawio
 ```
 
-Preview export, when available:
+Preview export，可用时：
 
 ```text
 docs/02-design/[feature-id].drawio.png
 ```
 
-Diagram type:
+Diagram type：
 
 - [ ] Architecture
 - [ ] Sequence / flow
@@ -118,7 +118,7 @@ Diagram type:
 - [ ] State transition
 - [ ] Learning loop
 
-What the diagram must make clear:
+Diagram 必须讲清楚：
 
 - [Component / actor / data relationship 1]
 - [Component / actor / data relationship 2]
@@ -130,48 +130,47 @@ What the diagram must make clear:
 - [Business error]
 - [System error handling expectation]
 
-## 11. AI / Agent Role
+## 11. AI / Skill Role
 
-[Describe how AI or sub-agents may help.]
+[描述 AI 或 skill 如何帮助。默认围绕 Harness + loop + skill，不默认 multi-agent。]
 
-- Explorer:
-- Spec Lead:
-- Engineer:
-- Reviewer:
-- Security Reviewer:
-- Docs Researcher:
+- Skill selection:
+- Skill-native output:
+- Project supplement:
+- Implementation loop:
+- Harness gates:
 
 ## 12. Verification Evidence
 
-Required local test:
+Required local test：
 
 ```bash
 [command]
 ```
 
-Required local run:
+Required local run：
 
 ```bash
 [command]
 ```
 
-Evidence to capture:
+Evidence to capture：
 
-- [ ] Test output.
-- [ ] Local run output.
-- [ ] API example or screenshot.
-- [ ] Error/fix note if failures occur.
-- [ ] Runbook update.
+- [ ] Test output。
+- [ ] Local run output。
+- [ ] API example 或 screenshot。
+- [ ] Error/fix note，如果发生 failure。
+- [ ] Runbook update。
 
 ## 13. Feynman Reflection Questions
 
-- What problem does this technology or feature solve?
-- How does the implementation work, in my own words?
-- Can I explain the design diagram without reading the code?
-- What part was initially confusing?
-- What evidence proves it works?
-- How can another engineer reproduce it?
-- How did AI help, and what did I still need to verify?
+- 这个 technology 或 feature 解决什么问题？
+- 用我自己的话说，implementation 是怎么工作的？
+- 不看代码，我能不能解释 design diagram？
+- 最开始让我困惑的部分是什么？
+- 什么 evidence 证明它能工作？
+- 另一个 engineer 如何复现？
+- AI 帮了什么？我仍然需要自己验证什么？
 
 ## 14. Open Questions
 

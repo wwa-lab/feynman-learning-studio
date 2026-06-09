@@ -12,6 +12,7 @@ learning goal
   -> skill-native output
   -> project supplement
   -> implementation loop
+  -> understand-anything code map
   -> harness gates
   -> runbook evidence
   -> Feynman reflection
@@ -31,6 +32,7 @@ goal
   -> tasks
   -> implementation
   -> verification
+  -> code understanding
   -> runbook
   -> reflection
   -> next slice
@@ -42,8 +44,38 @@ goal
 - skill-native artifacts：保留 skill 原始输出。
 - project supplements：补足本 repo 的 SDD、教学、验证要求。
 - manifest：固定输入、约束、分支、验证命令、风险。
+- code map：用 `understand-anything` 帮助学习者理解 AI-generated code 的结构和关系。
 - runbook：如何测试、如何运行、如何手动验证、有哪些踩坑。
 - Feynman reflection prompts：学习者能不能用自己的话讲清楚。
+
+### Code Understanding Loop
+
+Code Understanding Loop 用于把 AI 生成的 Java / Spring Boot 代码变成可学习、可讲解的地图。它特别面向有 AS/400 / IBM iSeries 背景、但 Java 项目经验较少的学习者。
+
+推荐流程：
+
+```text
+implementation verified
+  -> run /understand --language zh
+  -> inspect dashboard / knowledge graph
+  -> identify reading path
+  -> explain with AS/400 analogy
+  -> record questions and conclusions
+  -> update runbook or reading guide
+```
+
+关注三类问题：
+
+- 入口在哪里：Spring Boot application、controller、test 从哪里开始。
+- 请求怎么走：API request 如何经过 controller / service / mapper / SQL。
+- 配置怎么连：`application.yml`、Flyway migration、MyBatis mapper、Swagger/OpenAPI 分别负责什么。
+
+`.understand-anything/` 默认是可再生成的本地索引，不自动作为长期 source of truth。长期沉淀应写入：
+
+- 当前 slice runbook。
+- `docs/02-design/` 下的中文 reading guide。
+- `docs/05-decisions/` 下的长期设计选择。
+- `docs/06-articles/` 下的 Feynman explanation。
 
 ### Step Loop
 

@@ -1,0 +1,14 @@
+package com.feynman.learningstudio.common.exception;
+
+public enum ErrorCode {
+    VALIDATION_ERROR,
+    TOPIC_NOT_FOUND,
+    TOPIC_IN_USE,
+    EXPERIMENT_NOT_FOUND,
+    DUPLICATE_TOPIC_SLUG,
+    INVALID_TOPIC_REFERENCE,
+    INVALID_EXPERIMENT_STATUS,
+    INVALID_STATUS_TRANSITION,
+    DATABASE_ERROR,
+    SYSTEM_ERROR
+}

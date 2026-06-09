@@ -36,22 +36,47 @@ Flow:
 proposal -> design -> tasks -> TDD -> implementation -> review -> verification -> archive
 ```
 
-## Agent Team Rhythm
+## Harness / Loop / Skill Rhythm
 
-For substantial work, use these roles:
+This project uses Harness + loop + skill as the default working model. Multi-agent execution is not the default.
 
-1. `orchestrator` clarifies the goal, scope, and acceptance criteria.
-2. `explorer` gathers repo evidence and relevant docs.
-3. `spec-lead` updates or drafts the spec.
-4. `architect` checks boundaries and evolution path.
-5. `backend-engineer` or `frontend-engineer` implements.
-6. `reviewer` checks correctness and missing tests.
-7. `security-reviewer` checks sensitive surfaces.
-8. `docs-researcher` verifies framework/API claims against primary sources.
+Flow:
 
-The orchestrator decides the final path and reports only the useful synthesis to the user.
+```text
+choose skill
+  -> produce skill-native output
+  -> add project supplement if the skill output is not enough
+  -> run a small implementation loop
+  -> verify through harness gates
+  -> record evidence, issues, fixes, and learning notes
+```
 
-Use `docs/00-project-rules/agent-skill-routing.md` to map SDD stages to skills and roles.
+Loop:
+
+```text
+plan one small step
+  -> edit
+  -> run the narrowest useful check
+  -> inspect evidence
+  -> record problems and fixes
+  -> continue, adjust, or stop
+```
+
+Harness gates:
+
+- Spec gate: the change matches accepted scope and non-goals.
+- Design gate: architecture, data model, API, and package boundaries stay aligned.
+- Test gate: automated verification passes.
+- Run gate: local manual smoke is reproducible.
+- Style gate: code/docs match this repository's learning style.
+- Learning gate: runbook captures setup, verification,踩坑, fixes, and Feynman reflection prompts.
+
+Use `docs/00-project-rules/agent-skill-routing.md` to map SDD stages to skills, harness gates, and expected artifacts.
+
+Detailed rules:
+
+- Harness loop: `docs/00-project-rules/harness-loop.md`
+- Harness gates: `docs/00-project-rules/harness-gates.md`
 
 ## Codex Producer / Claude Reviewer Flow
 
@@ -65,7 +90,7 @@ Codex writes docs/code/tests/runbooks
   -> final verification is recorded before PR/merge
 ```
 
-Use this split for:
+Use this split only when the user asks for independent review or when a change is risky enough to justify it:
 
 - non-trivial backend or frontend code
 - changes to API contracts or persistence
@@ -73,7 +98,7 @@ Use this split for:
 - security-sensitive changes
 - PRs intended for merge
 
-For tiny docs edits, typo fixes, or local cleanup, Claude Code review is optional.
+For tiny docs edits, typo fixes, local cleanup, and normal learning-loop work, Claude Code review is optional and not part of the default loop.
 
 Claude Code review should focus on:
 
@@ -95,7 +120,7 @@ Before implementation starts, the task should have:
 - Acceptance criteria.
 - Verification command.
 - Open questions, or a clear decision that no clarification is needed.
-- Execution manifest for multi-step or multi-agent work.
+- Execution manifest for multi-step implementation loop.
 
 Small tasks can satisfy this implicitly.
 

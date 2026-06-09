@@ -1,75 +1,75 @@
-# Agent Skill Routing
+# Skill Harness Routing
 
-This document adapts the Control Tower skill-routing pattern for Codex and other agents.
+This document adapts the Control Tower skill-routing pattern for a Codex-centered Harness + loop + skill workflow.
 
 ## Rule
 
-When a task clearly belongs to an SDD stage, use the matching skill or agent role instead of improvising a new workflow.
+When a task clearly belongs to an SDD stage, use the matching skill instead of improvising a new workflow.
+
+This project does not use multi-agent execution as the default. Treat skills as the primary workflow unit, and treat harness gates as the proof that the skill output and implementation are acceptable.
 
 ## Stage Routing
 
-| Stage | Primary skill / role | Output |
+| Stage | Primary skill | Harness gate | Output |
 |---|---|---|
-| Raw idea or notes -> stories | `req-to-user-story` / `spec-lead` | user or engineer stories |
-| Stories -> spec | `user-story-to-spec` / `spec-lead` | implementation-facing spec |
-| Spec -> architecture | `spec-to-architecture` / `architect` | architecture notes |
-| Architecture/spec -> diagram | `drawio-skill` / `architect` | editable `.drawio` diagram |
-| Architecture/spec -> design | `architecture-to-design` / `architect` | design, data model, API guide |
-| Design -> tasks | `design-to-tasks` / `orchestrator` | phased task list |
-| Tasks -> code | `tasks-to-implementation` / `backend-engineer` / `frontend-engineer` | code, tests, docs |
-| Doc quality review | `review-doc-quality` / `reviewer` | doc readiness report |
-| Code vs design review | `review-code-against-design` / `reviewer` | implementation alignment findings |
-| Security review | `security-review` / `security-reviewer` | security findings |
-| Verification | `verification-loop` / `orchestrator` | verification evidence |
+| Raw idea or notes -> stories | `req-to-user-story` | clarity gate | user or engineer stories |
+| Stories -> spec | `user-story-to-spec` | spec gate | implementation-facing spec |
+| Spec -> architecture | `spec-to-architecture` | design gate | architecture notes |
+| Architecture/spec -> diagram | `drawio-skill` | explanation gate | editable `.drawio` diagram |
+| Architecture/spec -> design | `architecture-to-design` | design gate | design, data model, API guide |
+| Design -> tasks | `design-to-tasks` | execution gate | phased task list |
+| Tasks -> code | `tasks-to-implementation`, `tdd-workflow` | test gate | code, tests, docs |
+| Doc quality review | `review-doc-quality` | doc gate | doc readiness report |
+| Code vs design review | `review-code-against-design` | alignment gate | implementation alignment findings |
+| Security review | `security-review` | security gate | security findings |
+| Verification | `verification-loop` | evidence gate | verification evidence |
 
-## Project Agent Roles
+## Project Loop Roles
 
-The project-local Codex roles live under `.codex/agents/`:
+These are loop responsibilities, not separate agents:
 
-- `explorer`: repo and evidence gathering
-- `spec-lead`: spec and acceptance criteria
-- `architect`: boundaries and evolution path
-- `backend-engineer`: Spring Boot backend implementation
-- `frontend-engineer`: Vue2 + ElementUI implementation
-- `reviewer`: correctness and spec drift review
-- `security-reviewer`: security-sensitive review
-- `docs-researcher`: framework/API documentation verification
+- Scope owner: keep the current slice inside spec and non-goals.
+- Evidence gatherer: inspect repo files, commands, logs, and framework docs when needed.
+- Skill runner: apply the selected skill and preserve its native output.
+- Implementer: make the smallest useful code or docs change.
+- Harness checker: run tests, smoke, review diff, and check style.
+- Learning recorder: update runbooks,踩坑 notes, and Feynman reflection prompts.
 
 Use `drawio-skill` proactively when a design has 3+ components, state transitions, data relationships, or agent handoffs.
 
 ## Default Flow For v0.1
 
-Use this flow for the first backend slice:
+Use this flow for backend learning slices:
 
 ```text
-spec-lead
-  -> architect
+spec skill
+  -> architecture/design skill
   -> draw.io design diagram
-  -> backend-engineer
-  -> reviewer
-  -> security-reviewer
-  -> orchestrator verification
+  -> task skill
+  -> TDD implementation loop
+  -> verification-loop
+  -> runbook and learning notes
 ```
 
 The implementation still stays small: Spring Boot 3.x, MyBatis, H2 local tests, Topic/Experiment CRUD, unified response, unified exception handling.
 
 ## Handoff Notes
 
-Each role should leave evidence, not just opinions:
+Each loop should leave evidence, not just opinions:
 
-- `explorer`: files inspected and important facts found
-- `spec-lead`: scope, non-goals, acceptance criteria, open questions
-- `architect`: boundary decisions and risks
-- `engineer`: files changed, tests added, verification commands
-- `reviewer`: findings by severity
-- `security-reviewer`: security findings and residual risks
-- `docs-researcher`: primary docs or repo files used as sources
+- files inspected and important facts found
+- scope, non-goals, acceptance criteria, open questions
+- boundary decisions and risks
+- files changed, tests added, verification commands
+- harness gate results
+- security findings and residual risks when relevant
+- primary docs or repo files used as sources when framework behavior matters
 
 ## Cross-Agent Compatibility
 
-Agents that cannot load Codex skills directly should use this file as their routing map, then open the referenced repo docs and skill files manually.
+Tools that cannot load Codex skills directly should use this file as their routing map, then open the referenced repo docs and skill files manually.
 
-Durable project facts belong in this repo. Temporary working notes can stay in the current agent thread.
+Durable project facts belong in this repo. Temporary working notes can stay in the current thread.
 
 ## Codex And Claude Code Split
 
@@ -82,15 +82,15 @@ Codex is the default producer:
 - run local verification
 - update runbooks and docs
 
-Claude Code is the default independent reviewer:
+Claude Code is optional independent reviewer when the user asks for it or a high-risk change needs a separate review gate:
 
 - review docs for phase quality and traceability
 - review code against specs, design, and tasks
 - review security-sensitive changes
-- challenge unclear verification evidence
+- challenge unclear harness evidence
 - identify missing tests or behavioral regressions
 
-For review, provide Claude Code with:
+When external review is requested, provide Claude Code with:
 
 - `AGENTS.md`
 - active spec

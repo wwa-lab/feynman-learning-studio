@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.feynman.learningstudio.topic.mapper.LearningTopicMapper">
+
+    <resultMap id="LearningTopicResultMap" type="com.feynman.learningstudio.topic.domain.LearningTopic">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="slug" column="slug"/>
+        <result property="description" column="description"/>
+        <result property="active" column="active"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <sql id="TopicColumns">
+        id, name, slug, description, active, created_at, updated_at
+    </sql>
+
+    <insert id="insert" parameterType="com.feynman.learningstudio.topic.domain.LearningTopic"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into learning_topic (name, slug, description, active)
+        values (#{name}, #{slug}, #{description}, #{active})
+    </insert>
+
+    <select id="findById" resultMap="LearningTopicResultMap">
+        select
+        <include refid="TopicColumns"/>
+        from learning_topic
+        where id = #{id}
+    </select>
+
+    <select id="countAll" resultType="int">
+        select count(id)
+        from learning_topic
+    </select>
+
+    <select id="findPage" resultMap="LearningTopicResultMap">
+        select
+        <include refid="TopicColumns"/>
+        from learning_topic
+        order by created_at desc, id desc
+        limit #{limit}
+        offset #{offset}
+    </select>
+
+    <select id="existsBySlug" resultType="boolean">
+        select count(id) > 0
+        from learning_topic
+        where slug = #{slug}
+    </select>
+
+    <select id="existsBySlugExcludingId" resultType="boolean">
+        select count(id) > 0
+        from learning_topic
+        where slug = #{slug}
+          and id &lt;&gt; #{id}
+    </select>
+
+    <update id="update" parameterType="com.feynman.learningstudio.topic.domain.LearningTopic">
+        update learning_topic
+        set name = #{name},
+            slug = #{slug},
+            description = #{description},
+            active = #{active},
+            updated_at = current_timestamp
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from learning_topic
+        where id = #{id}
+    </delete>
+
+    <select id="countExperimentsByTopicId" resultType="int">
+        select count(id)
+        from learning_experiment
+        where topic_id = #{topicId}
+    </select>
+</mapper>

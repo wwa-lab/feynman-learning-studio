@@ -1,0 +1,61 @@
+<mxfile host="app.diagrams.net" modified="2026-06-09T00:00:00.000Z" agent="Codex" version="24.0.0" type="device">
+  <diagram id="v01-backend-learning-core" name="v0.1 Backend Learning Core">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="actor" value="学习工程师 / AI Agent / Reviewer&#xa;API 操作 · 本地测试 · 本地运行 · Feynman reflection" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e8f1ff;strokeColor=#2f5597;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="230" y="40" width="700" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="Spring Boot Backend API&#xa;Controllers · Jakarta Validation · OpenAPI/Swagger" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eef7ee;strokeColor=#3b7f3b;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="230" y="160" width="700" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="common" value="Common Foundation&#xa;API Envelope · Global Exception Handler · Error Codes" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff4df;strokeColor=#b87900;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="230" y="270" width="700" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="topic" value="Learning Topic Domain&#xa;CRUD · Slug uniqueness · Active flag" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f4eafa;strokeColor=#7a3fa1;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="230" y="390" width="330" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="experiment" value="Learning Experiment Domain&#xa;CRUD · Topic reference · Status transition" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f4eafa;strokeColor=#7a3fa1;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="600" y="390" width="330" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="persistence" value="Persistence Layer&#xa;MyBatis Mapper · Parameterized SQL · Druid DataSource" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e9f7f7;strokeColor=#288989;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="230" y="540" width="700" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="database" value="Relational Database&#xa;H2 local tests · future PostgreSQL direction" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f2f2f2;strokeColor=#666666;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="230" y="660" width="700" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="state" value="Experiment Status&#xa;DRAFT → READY → RUNNING → COMPLETED&#xa;DRAFT/READY/RUNNING → ARCHIVED" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff0f0;strokeColor=#b85450" vertex="1" parent="1">
+          <mxGeometry x="970" y="390" width="170" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" value="HTTP / JSON" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="actor" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="api" target="common">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="common" target="topic">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="common" target="experiment">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="topic" target="experiment">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="topic" target="persistence">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="experiment" target="persistence">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge8" value="JDBC" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;" edge="1" parent="1" source="persistence" target="database">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge9" value="transition rule" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;dashed=1;" edge="1" parent="1" source="experiment" target="state">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

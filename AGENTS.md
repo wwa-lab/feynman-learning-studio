@@ -35,29 +35,60 @@ When documents disagree, stop and surface the conflict before implementing.
 - Keep implementation scoped to the current spec or accepted task.
 - Do not add speculative abstractions, services, or infrastructure before the current stage needs them.
 
-## Agent Team Model
+## Documentation Language
 
-Work as an agent team when the task benefits from multiple perspectives:
+- This repository is for personal learning and practice.
+- Project documentation should be written in Chinese by default.
+- Keep established technical terms, product names, framework names, API names, class names, file paths, commands, and code identifiers in their original language when that is clearer.
+- Examples: Spring Boot, MyBatis, H2, OpenAPI, Swagger, LearningTopic, LearningExperiment, CRUD, API, DTO, `mvn test`.
 
-- `orchestrator`: owns the current goal, scope, sequencing, and final synthesis.
-- `explorer`: gathers evidence from code, docs, logs, and external docs.
-- `spec-lead`: turns fuzzy goals into specs, acceptance criteria, and open questions.
-- `architect`: reviews boundaries, data model, module structure, and evolution path.
-- `backend-engineer`: implements Spring Boot, MyBatis, persistence, APIs, tests, and runbooks.
-- `frontend-engineer`: implements Vue2 + ElementUI workflow screens when frontend work begins.
-- `reviewer`: reviews correctness, maintainability, and missing tests.
-- `security-reviewer`: checks input validation, secret handling, SQL injection, auth, and data exposure.
-- `docs-researcher`: verifies framework/API behavior against primary docs when current behavior matters.
+## Harness / Loop / Skill Operating Model
 
-Prefer parallel exploration/review when work is independent. The orchestrator remains responsible for the final decision and user-facing answer.
+This project does not use multi-agent execution as the default working model.
+
+Default execution model:
+
+```text
+user goal
+  -> choose the relevant skill
+  -> preserve skill-native output
+  -> add project supplement when needed
+  -> run a tight implementation loop
+  -> pass harness gates
+  -> record evidence and learning notes
+```
+
+Use skills as the primary workflow surface:
+
+- Requirements and stories: `req-to-user-story`, `user-story-to-spec`.
+- Spec and design: `spec-to-architecture`, `architecture-to-design`, `drawio-skill`.
+- Tasks and implementation: `design-to-tasks`, `tasks-to-implementation`, `tdd-workflow`.
+- Review and verification: `review-doc-quality`, `review-code-against-design`, `security-review`, `verification-loop`.
+
+Use loop execution for each slice:
+
+```text
+plan small step -> make change -> run verification -> inspect evidence -> record issue/fix -> continue or stop
+```
+
+Use harness gates to prove the work matches the desired behavior and style:
+
+- Spec gate: implementation stays inside accepted scope.
+- Design gate: code structure follows the approved design.
+- Test gate: automated tests pass.
+- Run gate: local manual smoke works.
+- Style gate: output matches this repository's learning, documentation, and teaching style.
+- Learning gate: runbook captures setup, verification, problems, fixes, and Feynman reflection prompts.
+
+Do not spawn or depend on multiple specialized agents unless the user explicitly asks for that mode. When an independent second opinion is needed, prefer a bounded Claude Code review after Codex has produced code, tests, docs, and verification evidence.
 
 ## Codex / Claude Code Collaboration Model
 
-Default division of labor:
+Optional division of labor when the user asks for external review:
 
 - Codex is the producer: write specs, docs, code, tests, runbooks, manifests, and local verification notes.
-- Claude Code is the independent reviewer: review docs, code, security, spec alignment, and verification evidence before merge.
-- Do not treat a Codex self-review as a replacement for Claude Code review on non-trivial code changes.
+- Claude Code may be the independent reviewer: review docs, code, security, spec alignment, and verification evidence before merge.
+- Do not treat a Codex self-review as a replacement for Claude Code review when the user requests independent review on non-trivial code changes.
 - Do not ask Claude Code to rewrite the implementation during review unless the reviewer finds a blocking issue and the user agrees.
 - Review findings should be recorded in the PR, task file, or `docs/03-tasks/{feature-id}-review.md` for larger work.
 
@@ -74,6 +105,7 @@ Codex implements from spec and manifest
 ## SDD Rules
 
 - Specs drive implementation. Do not let AI-generated code redefine scope silently.
+- Skills provide workflow scaffolding, not the final definition of done. Preserve the skill's native output as its own artifact first; do not blend project-specific additions into it without making that distinction clear. When a skill's default output is thinner than this repository's SDD gates, add separate supplement sections or companion files for the missing spec, architecture, design, data model, API contract, task, manifest, diagram, runbook, verification, or review artifacts needed for this project.
 - Every non-trivial feature must define goal, boundary, acceptance criteria, verification command, and run evidence.
 - Start new non-trivial specs from `docs/01-specs/template.md`.
 - Start implementation task lists from `docs/03-tasks/template.md`.
@@ -85,7 +117,7 @@ spec -> AI/Agent implementation -> local test -> local run -> explanation -> Fey
 ```
 
 - Do not mark work complete without verification evidence or a clear reason why verification could not run.
-- Agents consume manifests, not guesses: multi-step work should pin inputs, branch, constraints, and verification commands.
+- Implementation loops consume manifests, not guesses: multi-step work should pin inputs, branch, constraints, and verification commands.
 
 ## Engineering Rules
 

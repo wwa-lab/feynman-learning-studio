@@ -1,6 +1,6 @@
 # Draw.io Design Diagram Prompt
 
-Use this prompt when starting design for a feature or learning experiment.
+当开始一个 feature 或 learning experiment 的设计，并且需要生成 draw.io diagram 时，使用这个 prompt。
 
 ```text
 Create an editable draw.io design diagram for Feynman Learning Studio.
@@ -36,3 +36,9 @@ The diagram must show:
 
 Keep it readable and focused. Do not turn the diagram into a full implementation plan.
 ```
+
+说明：
+
+- Prompt 本体保留英文，方便外部工具稳定执行。
+- 输出文件必须进入 `docs/02-design/`。
+- Diagram 是 design evidence，不是装饰图。

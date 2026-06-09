@@ -2,7 +2,7 @@
 
 ## Coding Baseline
 
-Use a project-tailored baseline:
+Frontend 使用项目定制基线：
 
 ```text
 Vue official style guide
@@ -12,16 +12,16 @@ Vue official style guide
   + Feynman Learning Studio design standards
 ```
 
-Vue and eslint-plugin-vue are the primary baseline for:
+Vue 和 eslint-plugin-vue 是主要基线，覆盖：
 
 - single-file component structure
 - component naming
 - props and events
 - template readability
 - Vue 2 compatibility
-- common Vue anti-pattern prevention
+- 常见 Vue anti-pattern prevention
 
-Airbnb JavaScript Style Guide is the secondary baseline for:
+Airbnb JavaScript Style Guide 是辅助基线，覆盖：
 
 - JavaScript naming
 - `const` / `let`
@@ -31,7 +31,7 @@ Airbnb JavaScript Style Guide is the secondary baseline for:
 - equality and control flow
 - whitespace and readability
 
-ElementUI is the component baseline for v0.2 workbench UI:
+ElementUI 是 v0.2 workbench UI 的组件基线：
 
 - tables
 - forms
@@ -41,32 +41,32 @@ ElementUI is the component baseline for v0.2 workbench UI:
 - alerts
 - pagination
 
-Project design standards override generic UI preferences when there is tension. This is an engineer workbench, not a marketing site.
+当通用 UI 偏好和项目设计标准冲突时，以项目设计标准为准。这里是 engineer workbench，不是 marketing site。
 
-For v0.2, enforce the rules mainly through code review and targeted tests. Add ESLint/Prettier or equivalent tooling after the frontend skeleton exists.
+v0.2 先通过 code review 和 targeted tests 执行规则。Frontend skeleton 稳定后，再加入 ESLint / Prettier 或等价 tooling。
 
-Planned automation sequence:
+计划中的自动化顺序：
 
-1. Frontend unit tests.
-2. ESLint with Vue 2 recommended/strongly-recommended rules.
-3. Prettier or a stable formatter configuration.
-4. Component tests for critical forms and status behavior.
-5. Playwright E2E for critical user flows.
+1. Frontend unit tests。
+2. ESLint with Vue 2 recommended/strongly-recommended rules。
+3. Prettier 或稳定 formatter configuration。
+4. Component tests for critical forms and status behavior。
+5. Playwright E2E for critical user flows。
 
-Do not block initial frontend scaffolding on the full automation stack.
+不要为了完整 automation stack 阻塞 initial frontend scaffolding。
 
 ## Stack
 
-Planned frontend target:
+计划中的 frontend target：
 
 - Vue 2.6
 - ElementUI
-- Axios or the project-standard HTTP client
-- Vue Router when routing begins
+- Axios 或项目统一 HTTP client
+- Vue Router，当 routing 开始时引入
 
 ## Component Organization
 
-Use feature-oriented structure:
+使用 feature-oriented structure：
 
 ```text
 frontend/src/
@@ -88,40 +88,40 @@ frontend/src/
       model/
 ```
 
-Rules:
+规则：
 
-- Route-level views live under `views/`.
-- Reusable feature components live under `components/`.
-- Shared generic components live under `shared/components/`.
-- API clients live close to the feature unless shared by multiple features.
-- Avoid putting feature-specific logic into global utilities.
+- Route-level views 放在 `views/`。
+- Reusable feature components 放在 `components/`。
+- Shared generic components 放在 `shared/components/`。
+- API clients 尽量靠近 feature，除非多个 feature 共享。
+- 不要把 feature-specific logic 塞进 global utilities。
 
 ## Naming
 
-- Vue components use `PascalCase`.
-- View components should end with `View`, for example `ExperimentWorkbenchView`.
-- Dialog components should end with `Dialog`.
-- Form components should end with `Form`.
-- API functions use verb-noun names, for example `fetchExperimentPage`, `createTopic`, `updateExperimentStatus`.
-- Constants use `UPPER_SNAKE_CASE`.
-- Status labels and mappings should be centralized.
+- Vue components 使用 `PascalCase`。
+- View components 以 `View` 结尾，例如 `ExperimentWorkbenchView`。
+- Dialog components 以 `Dialog` 结尾。
+- Form components 以 `Form` 结尾。
+- API functions 使用 verb-noun names，例如 `fetchExperimentPage`、`createTopic`、`updateExperimentStatus`。
+- Constants 使用 `UPPER_SNAKE_CASE`。
+- Status labels 和 mappings 要集中管理。
 
 ## Vue Component Rules
 
-- Keep components focused; split when a component mixes unrelated concerns.
-- Use props for parent-to-child data.
-- Use events for child-to-parent changes.
-- Do not mutate props directly.
-- Keep computed properties pure.
-- Keep watchers rare and justified.
-- Keep template expressions simple; move logic into computed properties or methods.
-- Use `scoped` styles by default unless intentionally styling shared/global surfaces.
+- Components 保持 focused；混入无关 concern 时拆分。
+- Parent-to-child data 使用 props。
+- Child-to-parent changes 使用 events。
+- 不直接 mutate props。
+- Computed properties 保持 pure。
+- Watchers 少用，且要有理由。
+- Template expressions 保持简单，复杂逻辑移到 computed 或 methods。
+- 默认使用 `scoped` styles，除非明确在做 shared/global surfaces。
 
 ## Product Direction
 
-Build an operational learning workbench, not a landing page.
+构建 operational learning workbench，不构建 landing page。
 
-The first frontend should help users manage:
+第一个 frontend 应帮助用户管理：
 
 - learning topics
 - learning experiments
@@ -134,7 +134,7 @@ The first frontend should help users manage:
 
 ## Layout
 
-Recommended v0.2 layout:
+推荐 v0.2 layout：
 
 ```text
 left navigation: topics
@@ -142,36 +142,36 @@ center: experiment list / status
 right panel or detail page: experiment detail and evidence
 ```
 
-Use ElementUI components where they fit:
+合适时使用 ElementUI components：
 
 - `el-table` for lists
 - `el-form` for create/edit flows
-- `el-dialog` or routed detail screens for focused edits
+- `el-dialog` 或 routed detail screens for focused edits
 - `el-tag` for status
-- `el-steps` or compact custom status strips for progression
+- `el-steps` 或 compact custom status strips for progression
 - `el-alert` for validation or run evidence warnings
 
 ## API Handling
 
-- Use the backend API envelope consistently.
-- Surface `errorMessage` to users when safe.
-- Do not display raw stack traces or database errors.
-- Keep frontend validation aligned with backend validation.
-- Normalize pagination handling around `records`, `pageNo`, `pageSize`, and `total`.
-- Keep HTTP error normalization in one place.
-- Keep backend enum/status strings centralized in frontend constants.
-- Do not let every component parse API envelopes differently.
+- 一致使用 backend API envelope。
+- 安全时向用户展示 `errorMessage`。
+- 不显示 raw stack traces 或 database errors。
+- Frontend validation 要和 backend validation 对齐。
+- Pagination 围绕 `records`、`pageNo`、`pageSize`、`total` 标准化。
+- HTTP error normalization 放在一个地方。
+- Backend enum/status strings 集中到 frontend constants。
+- 不要让每个 component 各自解析 API envelope。
 
 ## State And Data
 
-- Keep data-fetching logic out of large components.
-- Prefer small feature modules.
-- Keep status mapping centralized.
-- Avoid duplicating backend enum strings across many files.
+- Data-fetching logic 不要放进大型 components。
+- 优先使用小的 feature modules。
+- Status mapping 集中管理。
+- 避免在很多文件里重复 backend enum strings。
 
 ## UX States
 
-Every data view should handle:
+每个 data view 都要处理：
 
 - loading
 - empty
@@ -179,34 +179,34 @@ Every data view should handle:
 - success
 - validation failure
 
-Every mutation should provide clear feedback.
+每个 mutation 都要有清楚 feedback。
 
-Form behavior:
+Form behavior：
 
-- Show validation errors near the field.
-- Disable submit while submitting.
-- Preserve user input when validation fails.
-- Confirm destructive actions such as archive/delete.
-- Refresh list/detail state after successful mutation.
+- Validation errors 显示在 field 附近。
+- Submitting 时禁用 submit。
+- Validation 失败时保留 user input。
+- Archive/delete 等 destructive actions 需要确认。
+- Mutation 成功后刷新 list/detail state。
 
 ## Visual Rules
 
-- Keep density useful for engineering work.
-- Avoid hero sections and marketing copy.
-- Avoid oversized cards, large rounded corners, decorative gradients, and ornamental backgrounds.
-- Use icons for common actions when available.
-- Ensure text fits controls on desktop and mobile widths.
+- 保持适合工程工作的 useful density。
+- 避免 hero sections 和 marketing copy。
+- 避免 oversized cards、large rounded corners、decorative gradients、ornamental backgrounds。
+- 常见 actions 优先使用 icons。
+- 确保 desktop 和 mobile widths 下 text 都能放进 controls。
 
 ## Testing
 
-Once frontend tooling exists:
+Frontend tooling 存在后：
 
 - unit test status mapping and API envelope handling
 - unit test API envelope normalization
 - component test important forms
-- E2E test critical user flows when Playwright is introduced
+- Playwright 引入后 E2E test critical user flows
 
-Critical v0.2 user flows:
+v0.2 critical user flows：
 
 - create topic
 - create experiment
@@ -216,13 +216,13 @@ Critical v0.2 user flows:
 
 ## Review Checklist
 
-Before handing frontend code to Claude Code review, confirm:
+交给 Claude Code review 前，确认：
 
-- [ ] Component structure follows Vue style guide intent.
-- [ ] eslint-plugin-vue Vue 2 rules are respected where tooling exists.
-- [ ] JavaScript follows Airbnb-style readability rules where compatible.
-- [ ] ElementUI components are used consistently.
-- [ ] API envelope handling is centralized.
-- [ ] Status mapping is centralized.
-- [ ] Loading, empty, error, success, and validation states are handled.
-- [ ] UI follows `design-standards.md`.
+- [ ] Component structure 符合 Vue style guide intent。
+- [ ] eslint-plugin-vue Vue 2 rules 在 tooling 可用时被遵守。
+- [ ] JavaScript 符合 Airbnb-style readability rules。
+- [ ] ElementUI components 使用一致。
+- [ ] API envelope handling 集中处理。
+- [ ] Status mapping 集中处理。
+- [ ] Loading、empty、error、success、validation states 都处理。
+- [ ] UI 符合 `design-standards.md`。

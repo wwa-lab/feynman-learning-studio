@@ -1,10 +1,11 @@
 # SDD Pipeline
 
-This document adapts lessons from `wwa-lab/Agentic-SDLC-Control-Tower` for Feynman Learning Studio.
+这个文档把 `wwa-lab/Agentic-SDLC-Control-Tower` 的经验，调整成适合 Feynman Learning Studio 的轻量 SDD pipeline。
 
-Control Tower uses a full enterprise SDD chain. This project uses a lighter profile by default because the current goal is to build runnable learning experiments without burying v0.1 under process.
+Control Tower 是完整 enterprise SDD chain。
+本项目默认使用更轻的 profile，因为当前目标是构建可运行 learning experiments，而不是把 v0.1 压在流程下面。
 
-The default execution model is Harness + loop + skill:
+默认执行模型是 Harness + loop + skill：
 
 ```text
 skill output
@@ -14,13 +15,13 @@ skill output
   -> runbook and Feynman reflection
 ```
 
-Do not default to multi-agent execution. Use external or independent review only when the user asks for it or when a high-risk change needs a separate review gate.
+不要默认使用 multi-agent execution。只有用户要求，或高风险变更需要独立 review gate 时，才使用 external / independent review。
 
 ## Profiles
 
 ### Lightweight Learning Experiment Profile
 
-Use for v0.1 and small learning experiments.
+用于 v0.1 和小型 learning experiments。
 
 ```text
 context
@@ -33,17 +34,17 @@ context
   -> Feynman reflection
 ```
 
-Required artifacts:
+必需 artifacts：
 
 - `docs/01-specs/{experiment-id}.md`
-- `docs/02-design/{experiment-id}.drawio` for architecture, data flow, ERD, or learning-loop diagrams when the experiment has 3+ moving parts
+- `docs/02-design/{experiment-id}.drawio`：当实验有 3 个以上 moving parts、数据关系、状态流转或 learning loop 时需要。
 - `docs/03-tasks/{experiment-id}.md`
-- `docs/04-runbooks/{experiment-id}-runbook.md` when commands or setup change
-- Feynman reflection inside the spec, task note, runbook, or article draft
+- `docs/04-runbooks/{experiment-id}-runbook.md`：当 commands 或 setup 变化时需要。
+- Feynman reflection：可以放在 spec、task note、runbook 或 article draft 中。
 
 ### Standard Agent Engineer Profile
 
-Use when a feature spans multiple modules, API contracts, data model, or UI/backend boundaries.
+当 feature 跨多个 modules、API contracts、data model 或 UI/backend boundaries 时使用。
 
 ```text
 context
@@ -58,12 +59,12 @@ context
   -> knowledge capture
 ```
 
-Recommended artifacts:
+推荐 artifacts：
 
-- `docs/00-project-rules/` for durable rules
+- `docs/00-project-rules/`：durable rules。
 - `docs/01-specs/{feature-id}.md`
 - `docs/02-design/{feature-id}.drawio`
-- `docs/02-design/{feature-id}.drawio.png` or `.svg` when export is available
+- `docs/02-design/{feature-id}.drawio.png` 或 `.svg`
 - `docs/02-design/{feature-id}-design.md`
 - `docs/03-tasks/{feature-id}-tasks.md`
 - `docs/03-tasks/{feature-id}-manifest.yaml`
@@ -71,7 +72,7 @@ Recommended artifacts:
 
 ### Enterprise SDD Profile
 
-Use only when the project genuinely needs a full control-tower style lifecycle.
+只有当项目真的需要完整 control-tower style lifecycle 时使用。
 
 ```text
 requirements
@@ -87,58 +88,58 @@ requirements
   -> review
 ```
 
-This is intentionally not the default. It is useful for large platform slices, cross-team work, compliance-heavy work, or when multiple agents need strict handoff boundaries.
+它不是默认流程。它适合 large platform slices、cross-team work、compliance-heavy work，或多个工具需要严格 handoff boundary 的场景。
 
 ## Minimum Gate Before Code
 
-Before non-trivial implementation starts, the current slice must answer:
+非平凡 implementation 开始前，当前 slice 必须能回答：
 
-- What problem is being solved?
-- Who is the user or engineer?
-- What is in scope?
-- What is explicitly out of scope?
-- What must happen in the happy path?
-- What must happen in validation, empty, and error states?
-- What data shape or state contract is needed?
-- Which module owns which responsibility?
-- How will acceptance be verified locally?
-- What evidence will be captured?
-- Which diagram explains the system, data model, flow, or learning loop?
+- 要解决什么问题？
+- 用户或 engineer 是谁？
+- Scope 内做什么？
+- 明确不做什么？
+- Happy path 必须发生什么？
+- Validation、empty、error states 必须怎么表现？
+- 需要什么 data shape 或 state contract？
+- 哪个 module 拥有什么 responsibility？
+- 本地怎么验收？
+- 要捕获什么 evidence？
+- 哪张 diagram 能解释 system、data model、flow 或 learning loop？
 
 ## Diagram Rule
 
-Start design with a visual model when the work has 3+ components, state transitions, data relationships, or agent handoffs.
+当工作有 3 个以上 components、状态流转、数据关系或 handoff 时，从 visual model 开始。
 
-Use draw.io as the default editable diagram format:
+默认 diagram format 是 draw.io：
 
-- source: `docs/02-design/{feature-id}.drawio`
-- exported preview, when available: `docs/02-design/{feature-id}.drawio.png` or `.svg`
+- source：`docs/02-design/{feature-id}.drawio`
+- exported preview：`docs/02-design/{feature-id}.drawio.png` 或 `.svg`
 
-Recommended diagram types:
+推荐 diagram types：
 
-- architecture diagram for services, layers, and dependencies
-- sequence diagram for request or agent handoff flow
-- ER diagram for persistent data relationships
-- state diagram for lifecycle/status transitions
-- learning-loop diagram for spec -> AI -> test -> run -> reflection
+- architecture diagram
+- sequence diagram
+- ER diagram
+- state diagram
+- learning-loop diagram
 
-The diagram is not decoration. It should help an engineer explain the design before implementation begins.
+Diagram 不是装饰。它应该帮助 engineer 在 implementation 前讲清楚设计。
 
 ## Grounding Rules
 
-When producing downstream docs or implementation from an upstream artifact:
+从上游 artifact 生成下游 docs 或 implementation 时：
 
-- Verify claims about existing files, classes, methods, endpoints, tables, commands, and configs.
-- Tag unresolved claims as `[UNVERIFIED]` instead of writing them as fact.
-- Do not carry an upstream mistake forward just because it appears in an earlier document.
-- Check for internal contradictions before handoff.
-- Do not defer implementation-impacting decisions with vague phrases like "implementation will decide".
+- 验证已有 files、classes、methods、endpoints、tables、commands、configs 的说法。
+- 未确认的说法标记 `[UNVERIFIED]`，不要写成事实。
+- 不要因为上游文档写错了，就把错误继续传下去。
+- Handoff 前检查内部矛盾。
+- 不要用 “implementation will decide” 这种模糊句子推迟会影响实现的决定。
 
 ## Manifest Rule
 
-Implementation loops consume manifests, not guesses.
+Implementation loops consume manifests, not guesses。
 
-For multi-step implementation, create or update an execution manifest that pins:
+多步骤 implementation 必须创建或更新 execution manifest，固定：
 
 - spec path
 - task path
@@ -150,18 +151,27 @@ For multi-step implementation, create or update an execution manifest that pins:
 - constraints
 - known risks
 
-Use `docs/03-tasks/execution-manifest-template.yaml` as the starting point.
+从这个模板开始：
+
+```text
+docs/03-tasks/execution-manifest-template.yaml
+```
 
 ## External Prompt Rule
 
-Prompts for external tools should be lightweight pointers.
+给外部工具的 prompts 应该是轻量指针。
 
-Prefer:
+推荐：
 
 ```text
 Read AGENTS.md, the active spec, the active task list, and the runbook. Implement only task T003.
 ```
 
-Avoid copying entire specs, designs, or code into prompts when the tool can read repository files directly.
+避免在 prompt 里复制整份 specs、designs 或 code。
+如果工具能读 repo 文件，就让它读 source of truth。
 
-Store durable prompts in `docs/07-prompts/` only when they are reusable.
+只有当 prompt 可复用时，才存入：
+
+```text
+docs/07-prompts/
+```

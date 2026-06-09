@@ -1,6 +1,6 @@
 # Development Standards
 
-This is the summary entry point. Detailed standards live in:
+这是开发标准总入口。更详细的标准在：
 
 - `docs/00-project-rules/design-standards.md`
 - `docs/00-project-rules/backend-standards.md`
@@ -8,29 +8,31 @@ This is the summary entry point. Detailed standards live in:
 
 ## Backend Standards
 
-Backend code follows a tailored baseline:
+Backend code 使用项目定制基线：
 
 ```text
 Alibaba Java Coding Guidelines
   + Spring Boot 3 engineering practice
   + MyBatis / SQL safety rules
+  + Flyway migration discipline
 ```
 
-Target stack for the first implementation path:
+第一条 implementation path 的目标 stack：
 
-- JDK 17.
-- Spring Boot 3.x.
-- Maven.
-- MyBatis.
-- Druid.
-- H2 for local test.
-- MySQL or PostgreSQL for local integration.
-- JUnit 5.
-- OpenAPI/Swagger.
+- JDK 17
+- Spring Boot 3.x
+- Maven
+- MyBatis
+- Druid
+- Flyway
+- H2 for local test
+- PostgreSQL for later integration
+- JUnit 5
+- OpenAPI / Swagger
 
 ## Package Organization
 
-Organize by feature/domain:
+按 feature/domain 组织代码：
 
 ```text
 backend/src/main/java/com/feynman/learningstudio/
@@ -52,9 +54,11 @@ backend/src/main/java/com/feynman/learningstudio/
     dto/
 ```
 
+不要把所有 controller、service、mapper 都放进一个 flat package。
+
 ## API Standards
 
-Use resource-oriented endpoints:
+使用 resource-oriented endpoints：
 
 ```text
 POST   /api/topics
@@ -71,7 +75,7 @@ PATCH  /api/experiments/{id}/status
 DELETE /api/experiments/{id}
 ```
 
-Return a consistent envelope:
+所有 API 返回统一 envelope：
 
 ```json
 {
@@ -82,7 +86,7 @@ Return a consistent envelope:
 }
 ```
 
-Pagination data should include:
+Pagination data 应包含：
 
 ```json
 {
@@ -95,38 +99,38 @@ Pagination data should include:
 
 ## Validation
 
-- Validate all request bodies with Jakarta Bean Validation.
-- Validate path variables and query parameters.
-- Validate enum/status transitions in the service layer.
-- Reject invalid slugs. Topic slugs should use lowercase letters, numbers, and hyphens.
-- Return stable business error codes for predictable failures.
+- 使用 Jakarta Bean Validation 校验 request body。
+- 校验 path variables 和 query parameters。
+- 在 service layer 校验 enum/status transitions。
+- Topic slug 只允许 lowercase letters、numbers 和 hyphens。
+- 可预期失败必须返回稳定 business error code。
 
 ## Persistence
 
-- Keep SQL in MyBatis mapper XML or mapper annotations.
-- Use parameterized queries only.
-- Do not concatenate user-controlled values into SQL.
-- Manage database schema through Flyway migrations.
-- Keep H2 migration behavior close to the integration database migration behavior.
-- Document H2/MySQL/PostgreSQL differences in the runbook.
+- SQL 放在 MyBatis mapper XML 或 mapper annotations。
+- 只使用 parameterized queries。
+- 不拼接 user-controlled values 到 SQL。
+- Database schema 统一通过 Flyway migrations 管理。
+- H2 migration behavior 要尽量接近未来 integration database。
+- H2/PostgreSQL 差异必须记录到 runbook。
 
 ## Error Handling
 
-- Use a global exception handler.
-- Convert validation, not-found, conflict, database, and unexpected errors into the API envelope.
-- Log detailed server-side context.
-- Do not expose SQL, stack traces, connection strings, or internal class names in API error messages.
+- 使用 global exception handler。
+- validation、not-found、conflict、database、unexpected errors 都要转换成 API envelope。
+- Server-side log 保留足够诊断上下文。
+- API error message 不暴露 SQL、stack traces、connection strings 或 internal class names。
 
 ## Testing
 
-Required for v0.1:
+v0.1 最低要求：
 
-- Unit tests for service validation and status behavior.
-- API integration tests for Topic and Experiment endpoints.
-- H2-backed tests that do not require Docker or external databases.
-- Tests for validation errors, not-found errors, duplicate slug, and invalid topic references.
+- service validation 和 status behavior 测试。
+- Topic / Experiment API integration tests。
+- H2-backed tests，不依赖 Docker 或外部数据库。
+- 覆盖 validation errors、not-found、duplicate slug、invalid topic reference。
 
-Preferred command:
+推荐命令：
 
 ```bash
 cd backend
@@ -135,7 +139,7 @@ mvn test -Dspring.profiles.active=test
 
 ## Frontend Standards
 
-Frontend code follows a tailored baseline:
+Frontend code 使用项目定制基线：
 
 ```text
 Vue official style guide
@@ -144,17 +148,17 @@ Vue official style guide
   + ElementUI workbench conventions
 ```
 
-When frontend starts:
+Frontend 开始后：
 
-- Use Vue 2.6 + ElementUI.
-- Build workbench screens, not marketing pages.
-- Favor dense, clear, operational UI.
-- Keep form validation aligned with backend validation.
-- Use API envelopes consistently.
+- 使用 Vue 2.6 + ElementUI。
+- 构建 workbench screens，不做 marketing pages。
+- UI 要适合工程师重复操作、扫描、对比。
+- Form validation 要和 backend validation 对齐。
+- 一致使用 API envelope。
 
 ## Documentation Standards
 
-Every non-trivial implementation should update at least one of:
+每个非平凡 implementation 至少应该更新以下一种：
 
 - active spec
 - runbook
@@ -162,4 +166,9 @@ Every non-trivial implementation should update at least one of:
 - decision record
 - article notes
 
-Docs should record what changed, how to run it, how it was verified, and what remains uncertain.
+Docs 必须说明：
+
+- 改了什么。
+- 怎么运行。
+- 怎么验证。
+- 还有什么不确定。

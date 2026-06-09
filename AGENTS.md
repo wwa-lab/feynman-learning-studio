@@ -153,7 +153,10 @@ spec -> AI/Agent implementation -> local test -> local run -> explanation -> Fey
 
 ## Git And GitHub Rules
 
-- Work on feature branches. Use `codex/` for Codex-created branches unless the user requests otherwise.
+- `main` is the only long-lived stable branch for completed learning slices.
+- Work on short-lived slice branches. Use `codex/<slice-id>` for Codex-created feature slices unless the user requests otherwise.
+- Do not use a long-lived `develop` branch as the default integration path. If `develop-leo` exists, treat it as historical/local exploration unless the user explicitly revives it.
+- After a slice branch is merged into `main` and its commits are confirmed in `main`, delete the local and remote slice branch.
 - Use conventional commits: `feat:`, `fix:`, `docs:`, `test:`, `refactor:`, `chore:`, `ci:`, `perf:`.
 - Do not push, merge, publish, or change GitHub repository settings without explicit user approval.
 - PRs must include purpose, scope, verification, risks, and follow-up notes.

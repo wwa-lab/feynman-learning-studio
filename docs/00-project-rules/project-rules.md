@@ -90,12 +90,45 @@ Use the SDD pipeline and routing guides:
 
 - SDD pipeline: `docs/00-project-rules/sdd-pipeline.md`
 - agent skill routing: `docs/00-project-rules/agent-skill-routing.md`
+- harness loop: `docs/00-project-rules/harness-loop.md`
+- harness gates: `docs/00-project-rules/harness-gates.md`
 
 Use the detailed standards:
 
 - design standards: `docs/00-project-rules/design-standards.md`
 - backend standards: `docs/00-project-rules/backend-standards.md`
 - frontend standards: `docs/00-project-rules/frontend-standards.md`
+
+### Skill Output Policy
+
+Skills provide workflow scaffolding, not the final definition of done.
+
+Preserve the skill's native output as its own artifact first. Do not blend project-specific additions into the skill output without making that distinction clear.
+
+When a skill's default output is thinner than this repository's SDD gates, continue supplementing it until the current slice has the artifacts needed for implementation, review, and learning evidence. Depending on the task, that may include spec, architecture, detailed design, data model, API contract, task list, execution manifest, draw.io diagram, runbook, verification commands, review notes, or Feynman reflection.
+
+Supplements should be clearly separated from native skill output, either as:
+
+- a companion file such as `{artifact}-supplement.md`; or
+- a clearly titled section such as `Project Supplement`.
+
+Do not stop just because a skill produced its nominal output. Stop when the repository-local source of truth, scope, acceptance criteria, implementation handoff, and verification evidence are sufficient for the current stage.
+
+### Documentation Language
+
+This repository is for personal learning and practice. Project documentation should be written in Chinese by default.
+
+Keep established technical terms, product names, framework names, API names, class names, file paths, commands, and code identifiers in their original language when that is clearer.
+
+Examples:
+
+- Spring Boot
+- MyBatis
+- H2
+- OpenAPI / Swagger
+- LearningTopic / LearningExperiment
+- CRUD / API / DTO
+- `mvn test`
 
 ## External Actions
 

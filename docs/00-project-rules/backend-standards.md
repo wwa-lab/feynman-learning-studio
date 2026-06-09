@@ -60,6 +60,7 @@ v0.1 backend target:
 - Maven
 - MyBatis
 - Druid
+- Flyway
 - H2 for local test
 - MySQL or PostgreSQL for local integration
 - JUnit 5
@@ -177,12 +178,23 @@ Logging and exception rules:
 - Keep SQL in MyBatis mapper XML or mapper annotations.
 - Use parameterized queries only.
 - Never concatenate user input into SQL.
-- Keep H2 schema close to the integration database schema.
+- Manage database schema with Flyway migrations under `backend/src/main/resources/db/migration/`.
+- Do not use ad hoc `schema.sql` for application schema management.
+- Keep H2 migrations close to the integration database migrations.
 - Document H2 and MySQL/PostgreSQL differences in the runbook.
 - Avoid `SELECT *`; select explicit columns.
 - Keep pagination deterministic with explicit ordering.
 - Use unique constraints for unique business keys such as topic slug.
 - Add indexes when query patterns justify them; do not add speculative indexes.
+
+## Database Migration
+
+- Use Flyway for all schema changes.
+- Name migrations with Flyway versioned migration format, for example `V1__create_learning_core_tables.sql`.
+- Keep migrations append-only after they have been shared or merged.
+- Prefer explicit table, column, constraint, and index names.
+- Do not rewrite an existing applied migration to hide a design change; add a new migration.
+- For learning slices, explain important migration decisions in the runbook.
 
 ## Transactions
 
@@ -230,6 +242,7 @@ Before handing backend code to Claude Code review, confirm:
 - [ ] Spring responsibilities are separated: controller validates and delegates; service owns business rules; mapper owns persistence.
 - [ ] All external inputs are validated.
 - [ ] All SQL is parameterized.
+- [ ] Database schema changes are managed by Flyway migrations.
 - [ ] API errors use the common envelope.
 - [ ] H2 local tests pass.
 - [ ] Runbook or verification evidence is updated.

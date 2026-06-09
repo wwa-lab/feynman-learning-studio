@@ -4,6 +4,18 @@ This document adapts lessons from `wwa-lab/Agentic-SDLC-Control-Tower` for Feynm
 
 Control Tower uses a full enterprise SDD chain. This project uses a lighter profile by default because the current goal is to build runnable learning experiments without burying v0.1 under process.
 
+The default execution model is Harness + loop + skill:
+
+```text
+skill output
+  -> project supplement
+  -> implementation loop
+  -> harness verification
+  -> runbook and Feynman reflection
+```
+
+Do not default to multi-agent execution. Use external or independent review only when the user asks for it or when a high-risk change needs a separate review gate.
+
 ## Profiles
 
 ### Lightweight Learning Experiment Profile
@@ -124,7 +136,7 @@ When producing downstream docs or implementation from an upstream artifact:
 
 ## Manifest Rule
 
-Agents consume manifests, not guesses.
+Implementation loops consume manifests, not guesses.
 
 For multi-step implementation, create or update an execution manifest that pins:
 

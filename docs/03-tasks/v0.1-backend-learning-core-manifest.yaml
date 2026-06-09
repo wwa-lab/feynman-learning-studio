@@ -1,0 +1,116 @@
+id: v0.1-backend-learning-core
+status: implemented
+owner: Leo
+created: 2026-06-09
+
+source_of_truth:
+  spec: docs/01-specs/v0.1-backend-learning-core.md
+  architecture: docs/02-design/v0.1-backend-learning-core-architecture.md
+  architecture_supplement: docs/02-design/v0.1-backend-learning-core-architecture-supplement.md
+  design: docs/02-design/v0.1-backend-learning-core-design.md
+  design_supplement: docs/02-design/v0.1-backend-learning-core-design-supplement.md
+  data_model: docs/02-design/v0.1-backend-learning-core-data-model.md
+  data_model_supplement: docs/02-design/v0.1-backend-learning-core-data-model-supplement.md
+  api_guide: docs/02-design/contracts/v0.1-backend-learning-core-api-guide.md
+  api_guide_supplement: docs/02-design/contracts/v0.1-backend-learning-core-api-guide-supplement.md
+  tasks: docs/03-tasks/v0.1-backend-learning-core-tasks.md
+  tasks_supplement: docs/03-tasks/v0.1-backend-learning-core-tasks-supplement.md
+  diagram: docs/02-design/v0.1-backend-learning-core.drawio
+  runbook: docs/04-runbooks/v0.1-backend-learning-core-runbook.md
+
+git:
+  base_branch: main
+  working_branch: codex/v0.1-backend-learning-core
+  target_pr: ""
+
+scope:
+  in:
+    - Spring Boot 3.x backend under backend/
+    - Learning Topic CRUD
+    - Learning Experiment CRUD
+    - Experiment status update
+    - Common API response envelope
+    - Global exception handling
+    - MyBatis persistence
+    - Druid datasource baseline
+    - Flyway database migration
+    - H2 local tests
+    - OpenAPI/Swagger
+    - Local runbook
+  out:
+    - frontend
+    - authentication and authorization
+    - user/team/member model
+    - external AI provider integration
+    - Redis, MQ, Nacos, Gateway
+    - production deployment
+
+loop_responsibilities:
+  scope_owner:
+    output: scope, non-goals, acceptance criteria, and open-question decisions
+  evidence_gatherer:
+    output: grounding notes from repo files, command output, and framework docs when needed
+  skill_runner:
+    output: preserved skill-native artifacts and project supplements
+  implementer:
+    output: tests, backend implementation, and runbook evidence
+  harness_checker:
+    output: spec/design/test/run/style/security gate results
+  learning_recorder:
+    output: runbook updates,踩坑 records, and Feynman reflection prompts
+
+constraints:
+  - Documentation must be written in Chinese by default, except established technical terms.
+  - Preserve skill-native outputs separately from project supplements.
+  - Keep implementation scoped to the accepted spec.
+  - Use JDK 17.
+  - Use package-by-feature organization.
+  - Validate all external input at controller boundaries.
+  - Use parameterized SQL through MyBatis.
+  - Use Flyway migrations for database schema management.
+  - Do not expose internal details in API errors.
+  - Do not add v0.1 out-of-scope infrastructure.
+
+decisions:
+  - Referenced LearningTopic cannot be deleted.
+  - Referenced topic delete returns TOPIC_IN_USE.
+  - v0.1 uses physical delete.
+  - Swagger UI is http://localhost:8080/swagger-ui/index.html.
+  - OpenAPI JSON is http://localhost:8080/v3/api-docs.
+  - Future integration database direction is PostgreSQL.
+  - Database schema is managed through Flyway migrations, not schema.sql.
+
+verification:
+  local_test:
+    command: cd backend && mvn test -Dspring.profiles.active=test
+    required: true
+  local_run:
+    command: cd backend && mvn spring-boot:run -Dspring-boot.run.profiles=local
+    required: true
+  evidence:
+    - "2026-06-09: cd backend && mvn test -Dspring.profiles.active=test -> BUILD SUCCESS; Tests run: 28, Failures: 0, Errors: 0, Skipped: 0"
+    - "2026-06-09: cd backend && mvn spring-boot:run -Dspring-boot.run.profiles=local -> Tomcat started on port 8080"
+    - "2026-06-09: GET /v3/api-docs -> HTTP 200, OpenAPI 3.1.0"
+    - "2026-06-09: GET /swagger-ui/index.html -> HTTP 200"
+    - "2026-06-09: POST /api/topics -> success true, id 1"
+    - "2026-06-09: POST /api/experiments -> success true, id 1, status DRAFT"
+    - "2026-06-09: PATCH /api/experiments/1/status READY -> HTTP 200"
+    - "2026-06-09: duplicate topic slug -> HTTP 409, DUPLICATE_TOPIC_SLUG"
+    - "2026-06-09: DELETE referenced topic -> HTTP 409, TOPIC_IN_USE"
+    - "2026-06-09: database schema migrated to Flyway V1__create_learning_core_tables.sql"
+    - "docs/04-runbooks/v0.1-backend-learning-core-runbook.md"
+
+risks:
+  - H2 and future PostgreSQL may differ in SQL behavior.
+  - v0.1 has no auth and is local-learning only.
+  - Physical delete may need archive/soft-delete redesign later.
+
+open_questions: []
+
+completion:
+  acceptance_met: true
+  design_diagram_updated: true
+  tests_passed: true
+  runbook_updated: true
+  feynman_reflection_captured: false
+  review_complete: false

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.feynman.learningstudio.experiment.mapper.LearningExperimentMapper">
+
+    <resultMap id="LearningExperimentResultMap"
+               type="com.feynman.learningstudio.experiment.domain.LearningExperiment">
+        <id property="id" column="id"/>
+        <result property="topicId" column="topic_id"/>
+        <result property="title" column="title"/>
+        <result property="summary" column="summary"/>
+        <result property="difficulty" column="difficulty"/>
+        <result property="status" column="status"/>
+        <result property="specPath" column="spec_path"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <sql id="ExperimentColumns">
+        id, topic_id, title, summary, difficulty, status, spec_path, created_at, updated_at
+    </sql>
+
+    <insert id="insert" parameterType="com.feynman.learningstudio.experiment.domain.LearningExperiment"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into learning_experiment (topic_id, title, summary, difficulty, status, spec_path)
+        values (#{topicId}, #{title}, #{summary}, #{difficulty}, #{status}, #{specPath})
+    </insert>
+
+    <select id="findById" resultMap="LearningExperimentResultMap">
+        select
+        <include refid="ExperimentColumns"/>
+        from learning_experiment
+        where id = #{id}
+    </select>
+
+    <select id="countAll" resultType="int">
+        select count(id)
+        from learning_experiment
+        <where>
+            <if test="topicId != null">
+                topic_id = #{topicId}
+            </if>
+        </where>
+    </select>
+
+    <select id="findPage" resultMap="LearningExperimentResultMap">
+        select
+        <include refid="ExperimentColumns"/>
+        from learning_experiment
+        <where>
+            <if test="topicId != null">
+                topic_id = #{topicId}
+            </if>
+        </where>
+        order by created_at desc, id desc
+        limit #{limit}
+        offset #{offset}
+    </select>
+
+    <update id="update" parameterType="com.feynman.learningstudio.experiment.domain.LearningExperiment">
+        update learning_experiment
+        set topic_id = #{topicId},
+            title = #{title},
+            summary = #{summary},
+            difficulty = #{difficulty},
+            spec_path = #{specPath},
+            updated_at = current_timestamp
+        where id = #{id}
+    </update>
+
+    <update id="updateStatus">
+        update learning_experiment
+        set status = #{status},
+            updated_at = current_timestamp
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from learning_experiment
+        where id = #{id}
+    </delete>
+</mapper>

@@ -123,6 +123,7 @@ spec -> AI/Agent implementation -> local test -> local run -> explanation -> Fey
 
 - Java target: JDK 17.
 - Backend baseline: Spring Boot 3.x, Maven, MyBatis, Druid, H2 for tests.
+- Database schema changes must be managed by Flyway migrations. Do not use ad hoc `schema.sql` for application schema management.
 - Java coding baseline: Alibaba Java Coding Guidelines, adapted for Spring Boot 3 and MyBatis.
 - Frontend baseline: Vue 2.6 and ElementUI when frontend starts.
 - Frontend coding baseline: Vue style guide, eslint-plugin-vue Vue 2 rules, and Airbnb JavaScript where compatible.

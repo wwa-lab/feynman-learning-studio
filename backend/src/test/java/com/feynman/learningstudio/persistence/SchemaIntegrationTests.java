@@ -28,4 +28,17 @@ class SchemaIntegrationTests {
 
         assertThat(count).isZero();
     }
+
+    @Test
+    void flywayAppliedInitialMigration() {
+        Integer count = jdbcTemplate.queryForObject("""
+                select count(*)
+                from flyway_schema_history
+                where version = '1'
+                  and script = 'V1__create_learning_core_tables.sql'
+                  and success = true
+                """, Integer.class);
+
+        assertThat(count).isOne();
+    }
 }

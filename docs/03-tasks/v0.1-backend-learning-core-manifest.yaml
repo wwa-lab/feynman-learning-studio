@@ -33,6 +33,7 @@ scope:
     - Global exception handling
     - MyBatis persistence
     - Druid datasource baseline
+    - Flyway database migration
     - H2 local tests
     - OpenAPI/Swagger
     - Local runbook
@@ -66,6 +67,7 @@ constraints:
   - Use package-by-feature organization.
   - Validate all external input at controller boundaries.
   - Use parameterized SQL through MyBatis.
+  - Use Flyway migrations for database schema management.
   - Do not expose internal details in API errors.
   - Do not add v0.1 out-of-scope infrastructure.
 
@@ -76,6 +78,7 @@ decisions:
   - Swagger UI is http://localhost:8080/swagger-ui/index.html.
   - OpenAPI JSON is http://localhost:8080/v3/api-docs.
   - Future integration database direction is PostgreSQL.
+  - Database schema is managed through Flyway migrations, not schema.sql.
 
 verification:
   local_test:
@@ -85,7 +88,7 @@ verification:
     command: cd backend && mvn spring-boot:run -Dspring-boot.run.profiles=local
     required: true
   evidence:
-    - "2026-06-09: cd backend && mvn test -Dspring.profiles.active=test -> BUILD SUCCESS; Tests run: 27, Failures: 0, Errors: 0, Skipped: 0"
+    - "2026-06-09: cd backend && mvn test -Dspring.profiles.active=test -> BUILD SUCCESS; Tests run: 28, Failures: 0, Errors: 0, Skipped: 0"
     - "2026-06-09: cd backend && mvn spring-boot:run -Dspring-boot.run.profiles=local -> Tomcat started on port 8080"
     - "2026-06-09: GET /v3/api-docs -> HTTP 200, OpenAPI 3.1.0"
     - "2026-06-09: GET /swagger-ui/index.html -> HTTP 200"
@@ -94,6 +97,7 @@ verification:
     - "2026-06-09: PATCH /api/experiments/1/status READY -> HTTP 200"
     - "2026-06-09: duplicate topic slug -> HTTP 409, DUPLICATE_TOPIC_SLUG"
     - "2026-06-09: DELETE referenced topic -> HTTP 409, TOPIC_IN_USE"
+    - "2026-06-09: database schema migrated to Flyway V1__create_learning_core_tables.sql"
     - "docs/04-runbooks/v0.1-backend-learning-core-runbook.md"
 
 risks:

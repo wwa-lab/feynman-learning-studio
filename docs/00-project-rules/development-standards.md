@@ -106,7 +106,8 @@ Pagination data should include:
 - Keep SQL in MyBatis mapper XML or mapper annotations.
 - Use parameterized queries only.
 - Do not concatenate user-controlled values into SQL.
-- Keep H2 test schema close to the integration database schema.
+- Manage database schema through Flyway migrations.
+- Keep H2 migration behavior close to the integration database migration behavior.
 - Document H2/MySQL/PostgreSQL differences in the runbook.
 
 ## Error Handling
